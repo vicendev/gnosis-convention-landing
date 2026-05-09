@@ -15,7 +15,7 @@ const { lodgings, class: className } = Astro.props;
 
 <section id="lodging" class={cn("py-16 md:py-24", "animate-fade-up animate-on-scroll", className)}>
   <Container class="flex flex-col items-center gap-12">
-    <SectionTitle title="Alojamiento" subtitle="Opciones cercanas a la sede" />
+    <SectionTitle title="Alojamiento" subtitle="Opciones cercanas al espacio de encuentro" />
 
     <div class="w-full max-w-3xl flex flex-col gap-4">
       {lodgings.map((lodging, index) => (

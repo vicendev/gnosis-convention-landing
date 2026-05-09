@@ -35,7 +35,7 @@ export const convention: ConventionData = {
     contact: {
       phone: "+569 7818 3689",
       email: "zaczall@outlook.com",
-      responsibleName: "Jorge González & Maria Elena Mosalve",
+      responsibleName: "Jorge González & María Elena Monsalve",
     },
   },
 
