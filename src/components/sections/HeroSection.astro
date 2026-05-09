@@ -1,0 +1,141 @@
+---
+import { Icon } from 'astro-icon/components';
+import { cn } from '@/lib/utils';
+import { ASSET_BASE_URL } from '@/config/env';
+import type { ConventionContact } from '@/data/types';
+
+interface Props {
+  title: string;
+  subtitle: string;
+  date: string;
+  location: string;
+  contact: ConventionContact;
+  backgroundImage: string;
+  class?: string;
+}
+
+const { title, subtitle, date, location, contact, backgroundImage, class: className } = Astro.props;
+
+// Split title into three lines: number, first word, rest
+// e.g. "IX Convención Gnóstica Nacional" → number="IX", line1="Convención", line2="Gnóstica Nacional"
+const titleWords = title.split(" ");
+const number = titleWords[0] ?? "";
+const line1 = titleWords[1] ?? "";
+const line2 = titleWords.slice(2).join(" ");
+
+const imageUrl = backgroundImage.startsWith("/") || backgroundImage.startsWith("http")
+  ? backgroundImage
+  : `${ASSET_BASE_URL}${backgroundImage}`;
+---
+
+<section
+  id="hero"
+  class={cn(
+    "relative flex min-h-screen items-center justify-center bg-cover bg-center bg-no-repeat",
+    className
+  )}
+  style={`background-image: url(${imageUrl})`}
+>
+  <!-- Dark overlay -->
+  <div class="absolute inset-0 bg-iga-foreground/70"></div>
+
+  <!-- Main content — centered -->
+  <div class="relative z-10 flex flex-col items-center gap-4 md:gap-6 text-center text-iga-background px-4 py-16 md:py-24">
+
+    <!-- 1. SLOGAN / LEMA — goes first, as in the poster.
+         Spectral, italic, prominent but secondary to the title -->
+    <p class="font-spectral italic leading-tight drop-shadow-md font-semibold"
+       style="font-size: clamp(1.5rem, 3.5vw, 2.5rem);"
+    >
+      {subtitle}
+    </p>
+
+    <!-- Decorative line -->
+    <div class="h-px w-24 bg-iga-copper/80"></div>
+
+    <!-- 2. TITLE — responsive: stacked on mobile, side-by-side on desktop.
+         IX: Cinzel Decorative, chiseled, covers two lines on desktop. -->
+    <h1 class="flex flex-col items-center md:flex-row md:items-center md:justify-center gap-2 md:gap-6 leading-none">
+      <!-- IX — Cinzel Decorative, chiseled -->
+      <span class="block font-cinzel font-black leading-[0.85] tracking-tight text-chiseled"
+        style="font-size: clamp(3.5rem, 12vw, 10rem);"
+      >
+        {number}
+      </span>
+      <!-- Two lines stacked right (centered on mobile, left-aligned on desktop) -->
+      <div class="flex flex-col items-center md:items-start gap-0">
+        <!-- CONVENCIÓN — Cinzel regular, gold -->
+        <span class="block font-cinzel-regular uppercase font-bold text-iga-gold leading-tight drop-shadow-md"
+          style="font-size: clamp(1.5rem, 6vw, 4.25rem);"
+        >
+          {line1}
+        </span>
+        <!-- GNÓSTICA NACIONAL — Cinzel regular, gold, docked under -->
+        <span class="block font-cinzel-regular uppercase tracking-[0.2em] font-bold text-iga-gold drop-shadow-md"
+          style="font-size: clamp(0.9rem, 3vw, 2rem);"
+        >
+          {line2}
+        </span>
+      </div>
+    </h1>
+
+    <!-- 3. Date + Location -->
+    <div class="flex flex-col items-center gap-1">
+      <p class="font-serif font-semibold text-iga-copper"
+         style="font-size: clamp(1.125rem, 2.5vw, 1.75rem);"
+      >
+        {date}
+      </p>
+      <p class="uppercase tracking-widest opacity-80"
+         style="font-size: clamp(0.75rem, 1.5vw, 1.125rem);"
+      >
+        {location}
+      </p>
+    </div>
+
+    <!-- 4. Contact -->
+    <div class="mt-4 flex flex-wrap items-center justify-center gap-6 text-base">
+      {contact.phone && (
+        <a
+          href={`tel:${contact.phone}`}
+          class="flex items-center gap-2.5 hover:text-iga-copper transition-colors"
+        >
+          <Icon name="lucide:phone" class="h-5 w-5" />
+          <span class="font-medium">{contact.phone}</span>
+        </a>
+      )}
+      {contact.email && (
+        <a
+          href={`mailto:${contact.email}`}
+          class="flex items-center gap-2.5 hover:text-iga-copper transition-colors"
+        >
+          <Icon name="lucide:mail" class="h-5 w-5" />
+          <span class="font-medium">{contact.email}</span>
+        </a>
+      )}
+    </div>
+  </div>
+
+  <!-- Maestro — left side, bottom -->
+  <div class="absolute bottom-0 left-0 z-10">
+    <img
+      src="/maestro-nbg.png"
+      alt="Maestro Samael Aun Weor"
+      class="h-40 sm:h-56 md:h-64 lg:h-80 xl:h-96 w-auto object-contain opacity-90"
+    />
+  </div>
+
+  <!-- Maestra — right side, bottom -->
+  <div class="absolute bottom-0 right-0 z-10">
+    <img
+      src="/maestra-nbg.png"
+      alt="Maestra Litelantes"
+      class="h-40 sm:h-56 md:h-64 lg:h-80 xl:h-96 w-auto object-contain opacity-90"
+    />
+  </div>
+
+  <script>
+    import { initAnimateOnScroll } from '@/lib/animate-on-scroll';
+    initAnimateOnScroll();
+  </script>
+</section>

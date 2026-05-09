@@ -12,6 +12,24 @@
     "astro": "astro"
   },
   "dependencies": {
-    "astro": "^6.3.1"
+    "@fontsource/cinzel": "^5.2.8",
+    "@fontsource/cinzel-decorative": "^5.2.8",
+    "@fontsource/inter": "^5.2.8",
+    "@fontsource/merriweather": "^5.2.11",
+    "@fontsource/spectral": "^5.2.8",
+    "@iconify-json/lucide": "^1.2.105",
+    "astro": "^6.3.1",
+    "astro-icon": "^1.1.5",
+    "clsx": "^2.1.1",
+    "leaflet": "^1.9.4",
+    "tailwind-merge": "^3.5.0",
+    "tailwindcss": "^4.2.4"
+  },
+  "devDependencies": {
+    "@astrojs/check": "^0.9.9",
+    "@tailwindcss/postcss": "^4.2.4",
+    "@types/leaflet": "^1.9.21",
+    "autoprefixer": "^10.5.0",
+    "typescript": "^6.0.3"
   }
 }

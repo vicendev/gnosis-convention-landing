@@ -1,17 +1,79 @@
 ---
+import MainLayout from '@/layouts/MainLayout.astro';
+import { convention } from '@/data/convention';
 
+// Section components
+import HeroSection from '@/components/sections/HeroSection.astro';
+import PromotionSection from '@/components/sections/PromotionSection.astro';
+import RegistrationSection from '@/components/sections/RegistrationSection.astro';
+import MediaGallerySection from '@/components/sections/MediaGallerySection.astro';
+import MapSection from '@/components/sections/MapSection.astro';
+import LodgingSection from '@/components/sections/LodgingSection.astro';
+import FooterSection from '@/components/sections/FooterSection.astro';
+
+const pageTitle = `${convention.title} ${convention.year}`;
+const pageDescription = convention.subtitle;
 ---
 
-<html lang="en">
-	<head>
-		<meta charset="utf-8" />
-		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-		<link rel="icon" href="/favicon.ico" />
-		<meta name="viewport" content="width=device-width" />
-		<meta name="generator" content={Astro.generator} />
-		<title>Astro</title>
-	</head>
-	<body>
-		<h1>Astro</h1>
-	</body>
-</html>
+<MainLayout
+  title={pageTitle}
+  description={pageDescription}
+>
+  {
+    convention.sections.map((sectionId) => {
+      if (sectionId === "hero") {
+        return (
+          <HeroSection
+            title={convention.title}
+            subtitle={convention.subtitle}
+            date={convention.date}
+            location={convention.location}
+            contact={convention.contact}
+            backgroundImage={convention.assets.heroBackground}
+          />
+        );
+      }
+      if (sectionId === "promotion") {
+        return (
+          <PromotionSection
+            title={convention.title}
+            description={convention.aboutDescription}
+            videoUrl={convention.assets.videoPromo}
+          />
+        );
+      }
+      if (sectionId === "registration") {
+        return (
+          <RegistrationSection
+            registration={convention.registration}
+          />
+        );
+      }
+      if (sectionId === "gallery") {
+        return (
+          <MediaGallerySection
+            gallery={convention.assets.gallery}
+            galleryAttribution={convention.assets.galleryAttribution}
+          />
+        );
+      }
+      if (sectionId === "map") {
+        return (
+          <MapSection
+            map={convention.map}
+          />
+        );
+      }
+      if (sectionId === "lodging") {
+        return (
+          <LodgingSection
+            lodgings={convention.lodgings}
+          />
+        );
+      }
+      return null;
+    })
+  }
+
+  <FooterSection year={convention.year} />
+</MainLayout>

@@ -1,0 +1,123 @@
+---
+import { Icon } from 'astro-icon/components';
+import Container from '@/components/primitives/Container.astro';
+import SectionTitle from '@/components/primitives/SectionTitle.astro';
+import { cn } from '@/lib/utils';
+import type { ConventionMap } from '@/data/types';
+
+interface Props {
+  map: ConventionMap;
+  class?: string;
+}
+
+const { map, class: className } = Astro.props;
+const mapsUrl = map.mapsUrl ?? `https://www.google.com/maps?q=${map.lat},${map.lng}`;
+const embedUrl = map.embedUrl ?? `https://maps.google.com/maps?q=${map.lat},${map.lng}&z=${map.zoom}&output=embed`;
+const directionsUrl = map.directionsUrl ?? `https://www.google.com/maps/dir/?api=1&destination=${map.lat},${map.lng}`;
+const viewMapUrl = map.viewMapUrl ?? mapsUrl;
+---
+
+<section id="map" class={cn("py-16 md:py-24 bg-iga-background", "animate-fade-up animate-on-scroll", className)}>
+  <Container class="flex flex-col items-center gap-12">
+    <SectionTitle title="Ubicación" subtitle={`${map.placeName} · ${map.address}`} />
+
+    {/* Map container with ornate frame */}
+    <div class="w-full flex flex-col items-center gap-6">
+      {/* Decorative top line */}
+      <div class="flex items-center gap-4 w-full max-w-4xl">
+        <div class="flex-1 h-px bg-gradient-to-r from-transparent via-iga-copper/60 to-transparent"></div>
+        <svg width="24" height="24" viewBox="0 0 24 24" class="text-iga-copper/80 flex-shrink-0">
+          <path fill="currentColor" d="M12 2L9.19 8.63 2 9.24l5.46 4.73L5.82 21 12 17.27 18.18 21l-1.64-7.03L22 9.24l-7.19-.61z"/>
+        </svg>
+        <div class="flex-1 h-px bg-gradient-to-r from-transparent via-iga-copper/60 to-transparent"></div>
+      </div>
+
+      {/* Map frame */}
+      <div class="relative w-full max-w-4xl">
+        {/* Outer decorative border */}
+        <div class="absolute -inset-1 rounded-2xl bg-gradient-to-br from-iga-copper/40 via-iga-gold/20 to-iga-copper/40 blur-sm"></div>
+        
+        {/* Main frame */}
+        <div class="relative rounded-xl overflow-hidden shadow-2xl border-2 border-iga-copper/30 bg-iga-foreground/5">
+          {/* Corner ornaments */}
+          <div class="absolute top-0 left-0 w-8 h-8 border-t-2 border-l-2 border-iga-gold/60 rounded-tl-lg z-10"></div>
+          <div class="absolute top-0 right-0 w-8 h-8 border-t-2 border-r-2 border-iga-gold/60 rounded-tr-lg z-10"></div>
+          <div class="absolute bottom-0 left-0 w-8 h-8 border-b-2 border-l-2 border-iga-gold/60 rounded-bl-lg z-10"></div>
+          <div class="absolute bottom-0 right-0 w-8 h-8 border-b-2 border-r-2 border-iga-gold/60 rounded-br-lg z-10"></div>
+          
+          <div class="w-full h-[400px]">
+            <iframe
+              src={embedUrl}
+              width="100%"
+              height="100%"
+              style="border:0;"
+              allowfullscreen=""
+              loading="lazy"
+              referrerpolicy="no-referrer-when-downgrade"
+              title="Mapa de ubicación"
+            ></iframe>
+          </div>
+        </div>
+      </div>
+
+      {/* Decorative bottom line */}
+      <div class="flex items-center gap-4 w-full max-w-4xl">
+        <div class="flex-1 h-px bg-gradient-to-r from-transparent via-iga-copper/60 to-transparent"></div>
+        <svg width="24" height="24" viewBox="0 0 24 24" class="text-iga-copper/80 flex-shrink-0">
+          <path fill="currentColor" d="M12 2L9.19 8.63 2 9.24l5.46 4.73L5.82 21 12 17.27 18.18 21l-1.64-7.03L22 9.24l-7.19-.61z"/>
+        </svg>
+        <div class="flex-1 h-px bg-gradient-to-r from-transparent via-iga-copper/60 to-transparent"></div>
+      </div>
+    </div>
+
+    {/* Action cards */}
+    <div class="w-full max-w-3xl grid grid-cols-1 sm:grid-cols-2 gap-4">
+      {/* Cómo llegar */}
+      <a
+        href={directionsUrl}
+        target="_blank"
+        rel="noopener noreferrer"
+        class="flex flex-col items-center gap-3 p-6 rounded-xl border border-iga-copper/20 bg-white text-center transition-all duration-300 hover:shadow-lg hover:border-iga-copper/40 hover:-translate-y-0.5 group"
+      >
+        <div class="flex items-center justify-center w-14 h-14 rounded-full bg-gradient-to-br from-iga-copper/10 to-iga-gold/10 group-hover:from-iga-copper/20 group-hover:to-iga-gold/20 transition-all duration-300">
+          <svg width="28" height="28" viewBox="0 0 24 24" class="text-iga-copper">
+            <path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 11l19-9-9 19-2-8-8-2z"/>
+          </svg>
+        </div>
+        <h3 class="font-cinzel-regular text-base font-bold text-iga-navy uppercase tracking-wide">
+          Cómo llegar
+        </h3>
+        <p class="text-sm text-iga-foreground/70 leading-relaxed">
+          Abrir navegación paso a paso desde tu ubicación
+        </p>
+      </a>
+
+      {/* Ver mapa completo */}
+      <a
+        href={viewMapUrl}
+        target="_blank"
+        rel="noopener noreferrer"
+        class="flex flex-col items-center gap-3 p-6 rounded-xl border border-iga-copper/20 bg-white text-center transition-all duration-300 hover:shadow-lg hover:border-iga-copper/40 hover:-translate-y-0.5 group"
+      >
+        <div class="flex items-center justify-center w-14 h-14 rounded-full bg-gradient-to-br from-iga-copper/10 to-iga-gold/10 group-hover:from-iga-copper/20 group-hover:to-iga-gold/20 transition-all duration-300">
+          <svg width="28" height="28" viewBox="0 0 24 24" class="text-iga-copper">
+            <path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/>
+            <polyline points="15 3 21 3 21 9"/>
+            <line x1="10" y1="14" x2="21" y2="3"/>
+          </svg>
+        </div>
+        <h3 class="font-cinzel-regular text-base font-bold text-iga-navy uppercase tracking-wide">
+          Ver mapa completo
+        </h3>
+        <p class="text-sm text-iga-foreground/70 leading-relaxed">
+          Abrir Google Maps con toda la información del lugar
+        </p>
+      </a>
+    </div>
+  </Container>
+
+  <script>
+    import { initAnimateOnScroll } from '@/lib/animate-on-scroll';
+    initAnimateOnScroll();
+  </script>
+</section>

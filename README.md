@@ -1,43 +1,111 @@
-# Astro Starter Kit: Minimal
+# XI Convención Gnóstica Nacional — Landing Page
 
-```sh
-pnpm create astro@latest -- --template minimal
+Landing page estática para las convenciones del Instituto Gnóstico de Antropología (IGA) Chile.
+Reutilizable cada dos años editando un único archivo de configuración.
+
+## Stack
+
+| Herramienta | Uso |
+|-------------|-----|
+| [Astro](https://astro.build) | Static Site Generator |
+| TypeScript | Lenguaje |
+| Tailwind CSS v4 | Estilos |
+| @fontsource/merriweather, inter, cinzel, spectral | Fuentes locales |
+| astro-icon + Lucide | Iconos SVG |
+| Leaflet + OpenStreetMap | Mapas (sin API key) |
+| Cloudflare R2 | Assets (video, fotos) |
+
+## Arquitectura
+
+```
+src/
+├── components/
+│   ├── primitives/       # Atoms: Button, Card, Container, SectionTitle
+│   ├── sections/         # Bloques: Hero, About, Gallery, Map, Lodging, Registration
+│   └── Navigation.astro  # Menú sticky (mobile + desktop)
+├── data/
+│   ├── convention.ts     # Única fuente de verdad (editar aquí)
+│   └── types.ts          # Interfaces TypeScript
+├── layouts/
+│   └── MainLayout.astro  # Shell HTML, meta tags, fonts
+├── pages/
+│   └── index.astro       # Ensambla secciones desde convention.ts
+├── lib/
+│   ├── utils.ts          # cn() helper
+│   └── animate-on-scroll.ts  # IntersectionObserver
+└── styles/
+    ├── global.css        # Tema Tailwind, smooth scroll
+    └── animations.css    # Fade-up, fade-in, stagger
 ```
 
-> 🧑‍🚀 **Seasoned astronaut?** Delete this file. Have fun!
+### Principios
 
-## 🚀 Project Structure
+- **Tres capas**: Primitives (sin lógica) → Sections (presentacionales) → Layouts (shell HTML)
+- **Playlist pattern**: `index.astro` itera `convention.sections` y renderiza en orden
+- **Single source of truth**: Todo el contenido configurable vive en `src/data/convention.ts`
+- **Fuentes locales**: sin Google Fonts en runtime
+- **Sin API keys**: Leaflet/OSM para mapa, Google Maps embed opcional
 
-Inside of your Astro project, you'll see the following folders and files:
+## Cómo usar
 
-```text
-/
-├── public/
-├── src/
-│   └── pages/
-│       └── index.astro
-└── package.json
+### Requisitos
+
+- Node.js >= 18
+- pnpm (recomendado) o npm
+
+### Instalar
+
+```bash
+pnpm install
 ```
 
-Astro looks for `.astro` or `.md` files in the `src/pages/` directory. Each page is exposed as a route based on its file name.
+### Desarrollo
 
-There's nothing special about `src/components/`, but that's where we like to put any Astro/React/Vue/Svelte/Preact components.
+```bash
+pnpm run dev
+```
 
-Any static assets, like images, can be placed in the `public/` directory.
+Abre `http://localhost:4321`
 
-## 🧞 Commands
+### Build
 
-All commands are run from the root of the project, from a terminal:
+```bash
+pnpm run build
+```
 
-| Command                   | Action                                           |
-| :------------------------ | :----------------------------------------------- |
-| `pnpm install`             | Installs dependencies                            |
-| `pnpm dev`             | Starts local dev server at `localhost:4321`      |
-| `pnpm build`           | Build your production site to `./dist/`          |
-| `pnpm preview`         | Preview your build locally, before deploying     |
-| `pnpm astro ...`       | Run CLI commands like `astro add`, `astro check` |
-| `pnpm astro -- --help` | Get help using the Astro CLI                     |
+Genera los archivos estáticos en `dist/`.
 
-## 👀 Want to learn more?
+### Vista previa del build
 
-Feel free to check [our documentation](https://docs.astro.build) or jump into our [Discord server](https://astro.build/chat).
+```bash
+pnpm run preview
+```
+
+## Personalizar para una nueva convención
+
+Editar `src/data/convention.ts`:
+
+- Título, fecha, ubicación
+- Contacto (teléfono, email)
+- Texto de descripción
+- URLs de assets (hero background, video, fotos de galería)
+- Precio y datos de inscripción
+- Coordenadas del mapa
+- Lista de alojamientos
+- Orden de secciones
+
+## Estructura de assets en Cloudflare R2 (ejemplo)
+
+```
+images/gnosis/
+├── destino-valparaiso-fachada.webp
+├── destino-valparaiso-patio-1.webp
+├── destino_valparaiso_fachada_2.webp
+├── destino_valparaiso_fachada_3.webp
+├── destino_valparaiso_sala_conferencias_1.webp
+├── destino_valparaiso_sala_conferencias_2.webp
+└── video_promocion_splash.webp
+
+videos/
+└── promocion_iga_convencion_xi.mp4
+```

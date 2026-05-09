@@ -1,0 +1,28 @@
+---
+import Container from '@/components/primitives/Container.astro';
+import { cn } from '@/lib/utils';
+
+interface Props {
+  year: number;
+  class?: string;
+}
+
+const { year, class: className } = Astro.props;
+---
+
+<footer class={cn("border-t border-iga-foreground/10 py-8", className)}>
+  <Container class="flex flex-col items-center gap-4 text-center">
+    <img src="/iga-logo.png" alt="IGA Logo" class="h-10 w-auto opacity-70" />
+    <p class="text-sm text-iga-foreground/50">
+      &copy; {year} Instituto Gnóstico de Antropología Chile
+    </p>
+    <a
+      href="https://iga-chile.cl"
+      target="_blank"
+      rel="noopener noreferrer"
+      class="text-sm text-iga-navy hover:text-iga-copper transition-colors"
+    >
+      iga-chile.cl
+    </a>
+  </Container>
+</footer>

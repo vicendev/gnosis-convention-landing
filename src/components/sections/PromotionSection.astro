@@ -1,0 +1,94 @@
+---
+import Container from '@/components/primitives/Container.astro';
+import SectionTitle from '@/components/primitives/SectionTitle.astro';
+import { cn } from '@/lib/utils';
+import { ASSET_BASE_URL } from '@/config/env';
+
+interface Props {
+  title: string;
+  description: string;
+  videoUrl?: string;
+  class?: string;
+}
+
+const { title, description, videoUrl, class: className } = Astro.props;
+---
+
+<section id="promotion" class={cn("py-16 md:py-24", "animate-fade-up animate-on-scroll", className)}>
+  <Container class="flex flex-col items-center gap-8">
+    <SectionTitle title="Video Promocional" subtitle="XI Convención Gnóstica Nacional" />
+    {/* Elegant quote block */}
+    <div class="relative max-w-3xl w-full">
+      {/* Decorative left border */}
+      <div class="absolute left-0 top-0 bottom-0 w-0.5 md:w-1 bg-gradient-to-b from-iga-copper via-iga-gold to-iga-copper rounded-full"></div>
+      
+      {/* Large opening quote */}
+      <div class="absolute -top-2 md:-top-4 left-2 md:left-4 text-4xl md:text-6xl font-serif text-iga-copper/20 leading-none select-none">"</div>
+      
+      <blockquote class="pl-6 md:pl-8 pr-3 md:pr-4 py-3 md:py-4">
+        <p class="font-serif text-base md:text-lg lg:text-xl xl:text-2xl leading-relaxed text-iga-foreground/85 italic text-center">
+          {description}
+        </p>
+      </blockquote>
+      
+      {/* Large closing quote */}
+      <div class="absolute -bottom-6 md:-bottom-8 right-2 md:right-4 text-4xl md:text-6xl font-serif text-iga-copper/20 leading-none select-none rotate-180">"</div>
+    </div>
+
+    {videoUrl && (
+      <div class="w-full flex flex-col items-center gap-6">
+        {/* Decorative top line */}
+        <div class="flex items-center gap-4 w-full max-w-4xl">
+          <div class="flex-1 h-px bg-gradient-to-r from-transparent via-iga-copper/60 to-transparent"></div>
+          <svg width="24" height="24" viewBox="0 0 24 24" class="text-iga-copper/80 flex-shrink-0">
+            <path fill="currentColor" d="M12 2L9.19 8.63 2 9.24l5.46 4.73L5.82 21 12 17.27 18.18 21l-1.64-7.03L22 9.24l-7.19-.61z"/>
+          </svg>
+          <div class="flex-1 h-px bg-gradient-to-r from-transparent via-iga-copper/60 to-transparent"></div>
+        </div>
+
+        {/* Video container with ornate frame */}
+        <div class="relative w-full max-w-4xl">
+          {/* Outer decorative border */}
+          <div class="absolute -inset-1 rounded-2xl bg-gradient-to-br from-iga-copper/40 via-iga-gold/20 to-iga-copper/40 blur-sm"></div>
+          
+          {/* Main frame */}
+          <div class="relative rounded-xl overflow-hidden shadow-2xl border-2 border-iga-copper/30 bg-iga-foreground/5">
+            {/* Corner ornaments */}
+            <div class="absolute top-0 left-0 w-8 h-8 border-t-2 border-l-2 border-iga-gold/60 rounded-tl-lg z-10"></div>
+            <div class="absolute top-0 right-0 w-8 h-8 border-t-2 border-r-2 border-iga-gold/60 rounded-tr-lg z-10"></div>
+            <div class="absolute bottom-0 left-0 w-8 h-8 border-b-2 border-l-2 border-iga-gold/60 rounded-bl-lg z-10"></div>
+            <div class="absolute bottom-0 right-0 w-8 h-8 border-b-2 border-r-2 border-iga-gold/60 rounded-br-lg z-10"></div>
+            
+            <video
+              controls
+              playsinline
+              preload="metadata"
+              poster="https://storage.northpatagonialore.com/images/gnosis/video_promocion_splash.webp"
+              class="w-full h-full object-cover"
+            >
+              <source src={`${ASSET_BASE_URL}${videoUrl}`} type="video/mp4" />
+              <p class="p-4 text-center text-iga-foreground/60">
+                Tu navegador no soporta video HTML5. 
+                <a href={`${ASSET_BASE_URL}${videoUrl}`} class="text-iga-copper underline" download>Descargar video</a>
+              </p>
+            </video>
+          </div>
+        </div>
+
+        {/* Decorative bottom line */}
+        <div class="flex items-center gap-4 w-full max-w-4xl">
+          <div class="flex-1 h-px bg-gradient-to-r from-transparent via-iga-copper/60 to-transparent"></div>
+          <svg width="24" height="24" viewBox="0 0 24 24" class="text-iga-copper/80 flex-shrink-0">
+            <path fill="currentColor" d="M12 2L9.19 8.63 2 9.24l5.46 4.73L5.82 21 12 17.27 18.18 21l-1.64-7.03L22 9.24l-7.19-.61z"/>
+          </svg>
+          <div class="flex-1 h-px bg-gradient-to-r from-transparent via-iga-copper/60 to-transparent"></div>
+        </div>
+      </div>
+    )}
+  </Container>
+
+  <script>
+    import { initAnimateOnScroll } from '@/lib/animate-on-scroll';
+    initAnimateOnScroll();
+  </script>
+</section>

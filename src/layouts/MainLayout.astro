@@ -1,0 +1,52 @@
+---
+import '@fontsource/cinzel/600.css';
+import '@fontsource/cinzel/700.css';
+import '@fontsource/cinzel-decorative/700.css';
+import '@fontsource/cinzel-decorative/900.css';
+import '@fontsource/merriweather/400.css';
+import '@fontsource/merriweather/700.css';
+import '@fontsource/inter/400.css';
+import '@fontsource/inter/600.css';
+import '@fontsource/spectral/800.css';
+import '@/styles/global.css';
+import { SITE_URL } from '@/config/env';
+import { cn } from '@/lib/utils';
+import Navigation from '@/components/Navigation.astro';
+
+interface Props {
+  title?: string;
+  description?: string;
+  ogImage?: string;
+}
+
+const {
+  title = "Convención Nacional de Gnosis",
+  description = "Encuentro anual para el estudio y la práctica de la Gnosis en Chile. Charlas, talleres y meditación.",
+  ogImage = "/og-default.jpg",
+} = Astro.props;
+
+const canonicalPath = Astro.url.pathname;
+const canonicalUrl = new URL(canonicalPath, SITE_URL).href;
+---
+
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:image" content={ogImage} />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content={canonicalUrl} />
+
+    <link rel="canonical" href={canonicalUrl} />
+  </head>
+  <body class={cn("bg-iga-background text-iga-foreground font-sans antialiased")}>
+    <Navigation />
+    <slot />
+  </body>
+</html>

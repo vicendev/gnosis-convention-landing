@@ -1,0 +1,184 @@
+---
+import { cn } from '@/lib/utils';
+
+interface Props {
+  class?: string;
+}
+
+const { class: className } = Astro.props;
+
+const navLinks = [
+  { href: '#hero', label: 'Inicio' },
+  { href: '#promotion', label: 'Promoción' },
+  { href: '#registration', label: 'Inscripción' },
+  { href: '#gallery', label: 'Galería' },
+  { href: '#map', label: 'Ubicación' },
+  { href: '#lodging', label: 'Alojamiento' },
+];
+---
+
+<nav
+  id="main-nav"
+  class={cn(
+    "fixed top-0 left-0 right-0 z-50",
+    "bg-iga-gold/85 backdrop-blur-sm",
+    "border-b border-iga-copper/50",
+    "shadow-sm shadow-iga-copper/10",
+    "transition-all duration-300",
+    className
+  )}
+  aria-label="Navegación principal"
+>
+  <div class="mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-8">
+    <div class="flex items-center justify-between h-16 md:h-20">
+      
+      {/* Logo */}
+      <a 
+        href="#hero" 
+        class="flex items-center gap-3 shrink-0 group"
+        aria-label="Ir al inicio"
+      >
+        <img 
+          src="/iga-logo.png" 
+          alt="" 
+          class="h-10 md:h-12 w-auto opacity-100 group-hover:opacity-80 transition-opacity"
+          loading="eager"
+        />
+        <span class="hidden sm:block font-cinzel-regular text-sm md:text-base text-iga-navy uppercase tracking-wide">
+          IGA
+        </span>
+      </a>
+
+      {/* Desktop links */}
+      <div class="hidden md:flex items-center gap-1 lg:gap-2">
+        {navLinks.map((link) => (
+          <a
+            href={link.href}
+            class="nav-link-desktop px-3 lg:px-4 py-2 rounded-lg font-cinzel-regular text-xs lg:text-sm uppercase tracking-wide text-iga-foreground/80 hover:text-iga-navy hover:bg-iga-foreground/10 transition-all duration-200"
+          >
+            {link.label}
+          </a>
+        ))}
+      </div>
+
+      {/* Mobile menu button */}
+      <button
+        id="mobile-menu-btn"
+        type="button"
+        class="md:hidden flex items-center gap-2 px-4 py-2.5 bg-iga-navy hover:bg-iga-navy/90 text-iga-background rounded-lg font-sans text-base font-semibold transition-colors min-h-[48px] active:scale-95"
+        aria-expanded="false"
+        aria-controls="mobile-menu-overlay"
+      >
+        <span>Menú</span>
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <line x1="3" y1="6" x2="21" y2="6"></line>
+          <line x1="3" y1="12" x2="21" y2="12"></line>
+          <line x1="3" y1="18" x2="21" y2="18"></line>
+        </svg>
+      </button>
+    </div>
+  </div>
+</nav>
+
+<!-- Mobile menu overlay -->
+<div
+  id="mobile-menu-overlay"
+  class="fixed inset-0 z-40 bg-iga-foreground/96 flex flex-col items-center justify-center gap-4 px-6"
+  style="display: none;"
+  role="dialog"
+  aria-modal="true"
+  aria-label="Menú de navegación"
+>
+  <!-- Close button at top -->
+  <button
+    id="mobile-menu-close"
+    type="button"
+    class="absolute top-5 right-5 flex items-center gap-2 px-5 py-3 bg-iga-copper/20 hover:bg-iga-copper/40 text-iga-background rounded-lg font-sans text-base font-semibold transition-colors min-h-[48px]"
+    aria-label="Cerrar menú"
+  >
+    <span>Cerrar</span>
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+      <line x1="18" y1="6" x2="6" y2="18"></line>
+      <line x1="6" y1="6" x2="18" y2="18"></line>
+    </svg>
+  </button>
+
+  <!-- Navigation buttons -->
+  <nav class="flex flex-col items-center gap-3 w-full max-w-sm" aria-label="Navegación móvil">
+    {navLinks.map((link) => (
+      <a
+        href={link.href}
+        class="w-full text-center py-4 px-6 rounded-xl bg-iga-background/10 hover:bg-iga-copper/30 text-iga-background hover:text-white font-cinzel-regular text-xl uppercase tracking-wide transition-all duration-200 min-h-[56px] flex items-center justify-center"
+        data-mobilenav-link
+      >
+        {link.label}
+      </a>
+    ))}
+  </nav>
+</div>
+
+<script>
+  // Wait for DOM content before attaching events
+  function initMobileMenu() {
+    const menuBtn = document.getElementById('mobile-menu-btn');
+    const closeBtn = document.getElementById('mobile-menu-close');
+    const overlay = document.getElementById('mobile-menu-overlay');
+    
+    if (!menuBtn || !closeBtn || !overlay) {
+      return;
+    }
+
+    const mobileLinks = overlay.querySelectorAll('a');
+
+    function openMenu() {
+      overlay.style.display = 'flex';
+      menuBtn.setAttribute('aria-expanded', 'true');
+      document.body.style.overflow = 'hidden';
+    }
+
+    function closeMenu() {
+      overlay.style.display = 'none';
+      menuBtn.setAttribute('aria-expanded', 'false');
+      document.body.style.overflow = '';
+    }
+
+    function toggleMenu() {
+      if (overlay.style.display === 'flex') {
+        closeMenu();
+      } else {
+        openMenu();
+      }
+    }
+
+    menuBtn.addEventListener('click', toggleMenu);
+    closeBtn.addEventListener('click', closeMenu);
+
+    // Close when clicking any link inside the overlay
+    mobileLinks.forEach(function(link) {
+      link.addEventListener('click', function() {
+        closeMenu();
+      });
+    });
+
+    // Close on Escape key
+    document.addEventListener('keydown', function(e) {
+      if (e.key === 'Escape' && overlay.style.display === 'flex') {
+        closeMenu();
+      }
+    });
+
+    // Close when clicking the overlay background (not buttons)
+    overlay.addEventListener('click', function(e) {
+      if (e.target === overlay) {
+        closeMenu();
+      }
+    });
+  }
+
+  // Run after DOM is ready
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initMobileMenu);
+  } else {
+    initMobileMenu();
+  }
+</script>

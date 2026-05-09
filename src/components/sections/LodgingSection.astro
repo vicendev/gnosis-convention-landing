@@ -1,0 +1,88 @@
+---
+import { Icon } from 'astro-icon/components';
+import Container from '@/components/primitives/Container.astro';
+import SectionTitle from '@/components/primitives/SectionTitle.astro';
+import { cn } from '@/lib/utils';
+import type { ConventionLodging } from '@/data/types';
+
+interface Props {
+  lodgings: ConventionLodging[];
+  class?: string;
+}
+
+const { lodgings, class: className } = Astro.props;
+---
+
+<section id="lodging" class={cn("py-16 md:py-24", "animate-fade-up animate-on-scroll", className)}>
+  <Container class="flex flex-col items-center gap-12">
+    <SectionTitle title="Alojamiento" subtitle="Opciones cercanas a la sede" />
+
+    <div class="w-full max-w-3xl flex flex-col gap-4">
+      {lodgings.map((lodging, index) => (
+        <article class="rounded-xl border border-iga-copper/20 bg-white p-6 md:p-8 shadow-sm hover:shadow-md hover:border-iga-copper/40 transition-all duration-300">
+          
+          {/* Top accent line */}
+          <div class="h-0.5 w-16 bg-gradient-to-r from-iga-copper to-iga-gold rounded-full mb-5"></div>
+          
+          {/* Hotel name */}
+          <h3 class="font-cinzel-regular text-lg md:text-xl uppercase tracking-wide text-iga-navy mb-3">
+            {lodging.name}
+          </h3>
+          
+          {/* Info rows — clear, well spaced */}
+          <div class="flex flex-col gap-4 mt-4">
+            
+            {/* Address */}
+            <div class="flex items-start gap-3">
+              <Icon name="lucide:map-pin" class="h-5 w-5 text-iga-copper flex-shrink-0 mt-0.5" />
+              <div>
+                <p class="text-xs uppercase tracking-wider text-iga-foreground/40 font-sans font-semibold mb-0.5">Dirección</p>
+                <p class="text-base text-iga-foreground/80">{lodging.address}</p>
+              </div>
+            </div>
+            
+            {/* Phone */}
+            {lodging.phone && (
+              <div class="flex items-start gap-3">
+                <Icon name="lucide:phone" class="h-5 w-5 text-iga-copper flex-shrink-0 mt-0.5" />
+                <div>
+                  <p class="text-xs uppercase tracking-wider text-iga-foreground/40 font-sans font-semibold mb-0.5">Teléfono</p>
+                  <a href={`tel:${lodging.phone}`} class="text-base text-iga-foreground/80 hover:text-iga-copper transition-colors">
+                    {lodging.phone}
+                  </a>
+                </div>
+              </div>
+            )}
+            
+            {/* Distance */}
+            <div class="flex items-start gap-3">
+              <Icon name="lucide:navigation" class="h-5 w-5 text-iga-copper flex-shrink-0 mt-0.5" />
+              <div>
+                <p class="text-xs uppercase tracking-wider text-iga-foreground/40 font-sans font-semibold mb-0.5">Distancia</p>
+                <p class="text-base text-iga-foreground/80">{lodging.distance}</p>
+              </div>
+            </div>
+          </div>
+          
+          {/* Map link button */}
+          <div class="mt-6 pt-4 border-t border-iga-foreground/5">
+            <a
+              href={lodging.mapLink}
+              target="_blank"
+              rel="noopener noreferrer"
+              class="inline-flex items-center gap-2 px-5 py-3 rounded-lg bg-iga-copper/10 hover:bg-iga-copper/20 text-iga-copper hover:text-iga-copper font-sans text-sm font-semibold transition-all duration-200 min-h-[44px]"
+            >
+              <Icon name="lucide:map" class="h-4 w-4" />
+              Ver en Google Maps
+            </a>
+          </div>
+        </article>
+      ))}
+    </div>
+  </Container>
+
+  <script>
+    import { initAnimateOnScroll } from '@/lib/animate-on-scroll';
+    initAnimateOnScroll();
+  </script>
+</section>

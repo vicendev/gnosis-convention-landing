@@ -1,0 +1,95 @@
+---
+import Container from '@/components/primitives/Container.astro';
+import SectionTitle from '@/components/primitives/SectionTitle.astro';
+import { cn } from '@/lib/utils';
+import type { ConventionRegistration } from '@/data/types';
+
+interface Props {
+  registration: ConventionRegistration;
+  class?: string;
+}
+
+const { registration, class: className } = Astro.props;
+
+const formatPrice = (price: number, currency: string) => {
+  return new Intl.NumberFormat('es-CL', {
+    style: 'currency',
+    currency: currency,
+    minimumFractionDigits: 0,
+  }).format(price);
+};
+---
+
+<section id="registration" class={cn("py-16 md:py-24 bg-iga-background", "animate-fade-up animate-on-scroll", className)}>
+  <Container class="flex flex-col items-center gap-12">
+    <SectionTitle title="Inscripción" subtitle="Participa en la XI Convención" />
+
+    <div class="w-full max-w-2xl xl:max-w-3xl">
+      {/* Price card */}
+      <div class="relative rounded-xl overflow-hidden shadow-lg border border-iga-copper/20 bg-white">
+        {/* Decorative top accent */}
+        <div class="h-1 bg-gradient-to-r from-iga-copper via-iga-gold to-iga-copper"></div>
+        
+        <div class="p-8 md:p-10 xl:p-12 flex flex-col items-center gap-6 xl:gap-8">
+          {/* Price */}
+          <div class="text-center">
+            <p class="font-spectral text-sm md:text-base xl:text-lg text-iga-foreground/60 italic mb-2">
+              Valor de inscripción
+            </p>
+            <p class="font-cinzel-regular text-4xl md:text-5xl font-bold text-iga-navy">
+              {formatPrice(registration.price, registration.currency)}
+            </p>
+          </div>
+
+          {/* Decorative divider */}
+          <div class="flex items-center gap-3 w-full max-w-xs xl:max-w-sm">
+            <div class="flex-1 h-px bg-iga-copper/30"></div>
+            <svg width="16" height="16" viewBox="0 0 24 24" class="text-iga-copper/60 flex-shrink-0 xl:w-5 xl:h-5">
+              <path fill="currentColor" d="M12 2L9.19 8.63 2 9.24l5.46 4.73L5.82 21 12 17.27 18.18 21l-1.64-7.03L22 9.24l-7.19-.61z"/>
+            </svg>
+            <div class="flex-1 h-px bg-iga-copper/30"></div>
+          </div>
+
+          {/* Contact info */}
+          <div class="w-full flex flex-col gap-4 xl:gap-5 text-center">
+            <p class="font-sans text-sm xl:text-base text-iga-foreground/60">
+              Para inscribirse, contactar a los Directores de la convención:
+            </p>
+            
+            <div class="flex flex-col gap-3 xl:gap-4">
+              <p class="font-serif text-lg xl:text-xl text-iga-navy font-semibold">
+                {registration.contact.responsibleName}
+              </p>
+              
+              <div class="flex flex-col sm:flex-row items-center justify-center gap-4 sm:gap-6 xl:gap-8">
+                <a href={`tel:${registration.contact.phone}`} class="flex items-center gap-2 text-iga-foreground/70 hover:text-iga-copper transition-colors">
+                  <svg width="18" height="18" viewBox="0 0 24 24" class="flex-shrink-0 xl:w-5 xl:h-5">
+                    <path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.832 16.568a1 1 0 0 0 1.213-.303l.355-.465A2 2 0 0 1 17 15h3a2 2 0 0 1 2 2v3a2 2 0 0 1-2 2A18 18 0 0 1 2 4a2 2 0 0 1 2-2h3a2 2 0 0 1 2 2v3a2 2 0 0 1-.8 1.6l-.468.351a1 1 0 0 0-.292 1.233a14 14 0 0 0 6.392 6.384"/>
+                  </svg>
+                  <span class="font-medium xl:text-lg">{registration.contact.phone}</span>
+                </a>
+                
+                <span class="hidden sm:inline text-iga-foreground/30">·</span>
+                
+                <a href={`mailto:${registration.contact.email}`} class="flex items-center gap-2 text-iga-foreground/70 hover:text-iga-copper transition-colors">
+                  <svg width="18" height="18" viewBox="0 0 24 24" class="flex-shrink-0 xl:w-5 xl:h-5">
+                    <g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2">
+                      <path d="m22 7l-8.991 5.727a2 2 0 0 1-2.009 0L2 7"/>
+                      <rect width="20" height="16" x="2" y="4" rx="2"/>
+                    </g>
+                  </svg>
+                  <span class="font-medium xl:text-lg">{registration.contact.email}</span>
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </Container>
+
+  <script>
+    import { initAnimateOnScroll } from '@/lib/animate-on-scroll';
+    initAnimateOnScroll();
+  </script>
+</section>

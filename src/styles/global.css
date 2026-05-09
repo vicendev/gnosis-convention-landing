@@ -1,0 +1,40 @@
+@import "tailwindcss";
+@import "./animations.css";
+
+/* Smooth scrolling + offset for sticky nav */
+html {
+  scroll-behavior: smooth;
+  scroll-padding-top: 5rem;
+}
+
+@theme {
+  --color-iga-background: #F8F5F0;
+  --color-iga-foreground: #1F1F1F;
+  --color-iga-copper: #B87333;
+  --color-iga-gold: #D4AF37;
+  --color-iga-forest: #2E5A4C;
+  --color-iga-navy: #1A3A5C;
+
+  --font-serif: "Merriweather", serif;
+  --font-sans: "Inter", sans-serif;
+  --font-spectral: "Spectral", serif;
+  --font-cinzel: "Cinzel Decorative", serif;
+  --font-cinzel-regular: "Cinzel", serif;
+}
+
+/* ─── Chiseled / engraved text effect ────────────────── */
+.text-chiseled {
+  text-shadow:
+    1px 1px 0 rgba(0, 0, 0, 0.5),
+    2px 2px 0 rgba(0, 0, 0, 0.3),
+    3px 3px 4px rgba(0, 0, 0, 0.4);
+}
+
+/* ─── Hide scrollbar for gallery thumbnails ──────────── */
+.scrollbar-hide {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
+}

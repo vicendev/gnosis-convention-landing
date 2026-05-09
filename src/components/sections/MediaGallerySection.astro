@@ -1,0 +1,173 @@
+---
+import Container from '@/components/primitives/Container.astro';
+import SectionTitle from '@/components/primitives/SectionTitle.astro';
+import { cn } from '@/lib/utils';
+import { ASSET_BASE_URL } from '@/config/env';
+
+interface Props {
+  gallery: string[];
+  galleryAttribution?: string;
+  class?: string;
+}
+
+const { gallery, galleryAttribution, class: className } = Astro.props;
+---
+
+<section id="gallery" class={cn("py-16 md:py-24", "animate-fade-up animate-on-scroll", className)}>
+  <Container class="flex flex-col items-center gap-12">
+    <SectionTitle title="Galería" subtitle={galleryAttribution ?? "Fotos del evento"} />
+
+    {gallery.length > 0 && (
+      <div class="w-full max-w-4xl flex flex-col items-center gap-6">
+        {/* Main image display - crossfade with two layers */}
+        <div class="relative w-full aspect-[4/3] rounded-xl overflow-hidden shadow-2xl border-2 border-iga-copper/30 bg-iga-foreground/5">
+          <img
+            id="gallery-main-image"
+            src={`${ASSET_BASE_URL}${gallery[0]}`}
+            alt="Convention photo"
+            class="absolute inset-0 w-full h-full object-cover transition-opacity duration-500 ease-in-out opacity-100"
+          />
+          <img
+            id="gallery-main-image-next"
+            src=""
+            alt="Convention photo"
+            class="absolute inset-0 w-full h-full object-cover transition-opacity duration-500 ease-in-out opacity-0"
+          />
+          
+          {/* Navigation arrows */}
+          <button
+            id="gallery-prev"
+            class="absolute left-4 top-1/2 -translate-y-1/2 w-12 h-12 rounded-full bg-iga-background/90 border border-iga-copper/30 flex items-center justify-center text-iga-copper hover:bg-iga-copper hover:text-white transition-all duration-300 shadow-lg"
+            aria-label="Foto anterior"
+          >
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <polyline points="15 18 9 12 15 6"/>
+            </svg>
+          </button>
+          
+          <button
+            id="gallery-next"
+            class="absolute right-4 top-1/2 -translate-y-1/2 w-12 h-12 rounded-full bg-iga-background/90 border border-iga-copper/30 flex items-center justify-center text-iga-copper hover:bg-iga-copper hover:text-white transition-all duration-300 shadow-lg"
+            aria-label="Foto siguiente"
+          >
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <polyline points="9 18 15 12 9 6"/>
+            </svg>
+          </button>
+
+          {/* Image counter */}
+          <div class="absolute bottom-4 right-4 px-3 py-1.5 rounded-full bg-iga-background/90 border border-iga-copper/30 text-sm font-medium text-iga-foreground/80">
+            <span id="gallery-current">1</span> / <span id="gallery-total">{gallery.length}</span>
+          </div>
+        </div>
+
+        {/* Thumbnails */}
+        <div class="w-full flex gap-3 overflow-x-auto pb-2 scrollbar-hide" id="gallery-thumbnails">
+          {gallery.map((photo, index) => (
+            <button
+              class={`flex-shrink-0 w-20 h-16 md:w-24 md:h-18 rounded-lg overflow-hidden border-2 transition-all duration-300 ${index === 0 ? 'border-iga-copper shadow-lg scale-105' : 'border-transparent opacity-60 hover:opacity-100 hover:border-iga-copper/50'}`}
+              data-index={index}
+              aria-label={`Ver foto ${index + 1}`}
+            >
+              <img
+                src={`${ASSET_BASE_URL}${photo}`}
+                alt={`Thumbnail ${index + 1}`}
+                class="w-full h-full object-cover"
+                loading="lazy"
+              />
+            </button>
+          ))}
+        </div>
+      </div>
+    )}
+  </Container>
+
+  <script>
+    import { initAnimateOnScroll } from '@/lib/animate-on-scroll';
+
+    const initGalleryCarousel = () => {
+      const mainImage = document.getElementById('gallery-main-image') as HTMLImageElement;
+      const nextImage = document.getElementById('gallery-main-image-next') as HTMLImageElement;
+      const prevBtn = document.getElementById('gallery-prev');
+      const nextBtn = document.getElementById('gallery-next');
+      const currentSpan = document.getElementById('gallery-current');
+      const thumbnails = document.querySelectorAll('#gallery-thumbnails button');
+      
+      if (!mainImage || !nextImage || !prevBtn || !nextBtn || !currentSpan || thumbnails.length === 0) return;
+
+      let currentIndex = 0;
+      let isTransitioning = false;
+      const totalImages = thumbnails.length;
+
+      const updateGallery = (index: number) => {
+        if (isTransitioning || index === currentIndex) return;
+        isTransitioning = true;
+
+        const newSrc = thumbnails[index].querySelector('img')?.src || '';
+        
+        // Set the hidden image to the new source
+        nextImage.src = newSrc;
+        
+        // Crossfade: fade in the new image on top
+        nextImage.style.opacity = '1';
+        
+        // After transition completes, swap roles
+        setTimeout(() => {
+          // Move the new image source to the main image
+          mainImage.src = newSrc;
+          // Reset the overlay image
+          nextImage.style.opacity = '0';
+          
+          currentIndex = index;
+          currentSpan.textContent = String(currentIndex + 1);
+          
+          // Update thumbnails
+          thumbnails.forEach((thumb, i) => {
+            if (i === currentIndex) {
+              thumb.classList.remove('border-transparent', 'opacity-60');
+              thumb.classList.add('border-iga-copper', 'shadow-lg', 'scale-105');
+              // Scroll the active thumbnail into view
+              thumb.scrollIntoView({ behavior: 'smooth', inline: 'center', block: 'nearest' });
+            } else {
+              thumb.classList.remove('border-iga-copper', 'shadow-lg', 'scale-105');
+              thumb.classList.add('border-transparent', 'opacity-60');
+            }
+          });
+          
+          isTransitioning = false;
+        }, 500);
+      };
+
+      prevBtn.addEventListener('click', () => {
+        const newIndex = currentIndex === 0 ? totalImages - 1 : currentIndex - 1;
+        updateGallery(newIndex);
+      });
+
+      nextBtn.addEventListener('click', () => {
+        const newIndex = currentIndex === totalImages - 1 ? 0 : currentIndex + 1;
+        updateGallery(newIndex);
+      });
+
+      thumbnails.forEach((thumb) => {
+        thumb.addEventListener('click', () => {
+          const index = parseInt(thumb.getAttribute('data-index') || '0');
+          updateGallery(index);
+        });
+      });
+
+      // Keyboard navigation
+      document.addEventListener('keydown', (e) => {
+        if (e.key === 'ArrowLeft') {
+          const newIndex = currentIndex === 0 ? totalImages - 1 : currentIndex - 1;
+          updateGallery(newIndex);
+        } else if (e.key === 'ArrowRight') {
+          const newIndex = currentIndex === totalImages - 1 ? 0 : currentIndex + 1;
+          updateGallery(newIndex);
+        }
+      });
+    };
+
+    initAnimateOnScroll();
+    initGalleryCarousel();
+  </script>
+</section>
