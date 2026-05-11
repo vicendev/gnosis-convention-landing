@@ -39,7 +39,37 @@ const formatPrice = (price: number, currency: string) => {
             <p class="font-cinzel-regular text-4xl md:text-5xl font-bold text-iga-navy">
               {formatPrice(registration.price, registration.currency)}
             </p>
+            {registration.ageNote && (
+              <p class="text-xs md:text-sm text-iga-foreground/50 italic mt-2">
+                {registration.ageNote}
+              </p>
+            )}
           </div>
+
+          {/* Bank account */}
+          {registration.bankAccount && (
+            <div class="w-full">
+              <div class="flex flex-col items-center gap-3 p-6 md:p-8 rounded-xl bg-iga-navy/[0.04] border-2 border-iga-navy/15 shadow-sm">
+                <p class="font-sans text-sm md:text-base font-semibold uppercase tracking-widest text-iga-navy/70">
+                  Transferencia
+                </p>
+                <p class="font-mono text-base md:text-lg text-iga-navy font-bold text-center">
+                  {registration.bankAccount.accountType}: {registration.bankAccount.accountNumber}
+                </p>
+                <p class="font-sans text-base md:text-lg text-iga-foreground/80 font-medium">
+                  {registration.bankAccount.bankName}
+                </p>
+                <p class="font-sans text-sm md:text-base text-iga-foreground/70">
+                  Titular: {registration.bankAccount.accountHolder}
+                </p>
+                {registration.bankAccount.rut && (
+                  <p class="font-mono text-sm md:text-base text-iga-foreground/60">
+                    RUT: {registration.bankAccount.rut}
+                  </p>
+                )}
+              </div>
+            </div>
+          )}
 
           {/* Decorative divider */}
           <div class="flex items-center gap-3 w-full max-w-xs xl:max-w-sm">
@@ -52,8 +82,8 @@ const formatPrice = (price: number, currency: string) => {
 
           {/* Contact info */}
           <div class="w-full flex flex-col gap-4 xl:gap-5 text-center">
-            <p class="font-sans text-sm xl:text-base text-iga-foreground/60">
-              Para inscribirse, contactar a los Directores de la convención:
+            <p class="font-serif text-base xl:text-lg text-iga-navy font-semibold italic">
+              Enviar comprobante de depósito o transferencia a los Directores de la Convención:
             </p>
             
             <div class="flex flex-col gap-3 xl:gap-4">

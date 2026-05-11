@@ -22,8 +22,8 @@ export function initAnimateOnScroll(selector = ".animate-on-scroll"): void {
       });
     },
     {
-      threshold: 0.1,
-      rootMargin: "0px 0px -30px 0px",
+      threshold: 0,
+      rootMargin: "0px 0px -20px 0px",
     }
   );
 

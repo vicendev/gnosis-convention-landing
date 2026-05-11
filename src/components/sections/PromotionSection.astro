@@ -52,21 +52,30 @@ const { title, description, videoUrl, class: className } = Astro.props;
           <div class="absolute -inset-1 rounded-2xl bg-gradient-to-br from-iga-copper/40 via-iga-gold/20 to-iga-copper/40 blur-sm"></div>
           
           {/* Main frame */}
-          <div class="relative rounded-xl overflow-hidden shadow-2xl border-2 border-iga-copper/30 bg-iga-foreground/5">
+          <div class="relative rounded-xl overflow-hidden shadow-2xl border-2 border-iga-copper/30 bg-black">
             {/* Corner ornaments */}
-            <div class="absolute top-0 left-0 w-8 h-8 border-t-2 border-l-2 border-iga-gold/60 rounded-tl-lg z-10"></div>
-            <div class="absolute top-0 right-0 w-8 h-8 border-t-2 border-r-2 border-iga-gold/60 rounded-tr-lg z-10"></div>
-            <div class="absolute bottom-0 left-0 w-8 h-8 border-b-2 border-l-2 border-iga-gold/60 rounded-bl-lg z-10"></div>
-            <div class="absolute bottom-0 right-0 w-8 h-8 border-b-2 border-r-2 border-iga-gold/60 rounded-br-lg z-10"></div>
+            <div class="absolute top-0 left-0 w-8 h-8 border-t-2 border-l-2 border-iga-gold/60 rounded-tl-lg z-20"></div>
+            <div class="absolute top-0 right-0 w-8 h-8 border-t-2 border-r-2 border-iga-gold/60 rounded-tr-lg z-20"></div>
+            <div class="absolute bottom-0 left-0 w-8 h-8 border-b-2 border-l-2 border-iga-gold/60 rounded-bl-lg z-20"></div>
+            <div class="absolute bottom-0 right-0 w-8 h-8 border-b-2 border-r-2 border-iga-gold/60 rounded-br-lg z-20"></div>
+            
+            {/* Loading spinner */}
+            <div class="video-loader absolute inset-0 flex flex-col items-center justify-center gap-3 z-10">
+              <svg class="animate-spin h-10 w-10 text-iga-copper" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+              </svg>
+            </div>
             
             <video
               controls
               playsinline
-              preload="metadata"
+              preload="none"
               poster="https://storage.northpatagonialore.com/images/gnosis/video_promocion_splash.webp"
-              class="w-full h-full object-cover"
+              class="w-full h-full object-cover lazy-load"
+              oncanplay="this.parentNode.querySelector('.video-loader').style.display='none'"
             >
-              <source src={`${ASSET_BASE_URL}${videoUrl}`} type="video/mp4" />
+              <source data-src={`${ASSET_BASE_URL}${videoUrl}`} type="video/mp4" />
               <p class="p-4 text-center text-iga-foreground/60">
                 Tu navegador no soporta video HTML5. 
                 <a href={`${ASSET_BASE_URL}${videoUrl}`} class="text-iga-copper underline" download>Descargar video</a>
@@ -89,6 +98,8 @@ const { title, description, videoUrl, class: className } = Astro.props;
 
   <script>
     import { initAnimateOnScroll } from '@/lib/animate-on-scroll';
+    import { initLazyLoad } from '@/lib/lazy-load';
     initAnimateOnScroll();
+    initLazyLoad();
   </script>
 </section>

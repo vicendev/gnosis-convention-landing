@@ -45,9 +45,17 @@ const viewMapUrl = map.viewMapUrl ?? mapsUrl;
           <div class="absolute bottom-0 left-0 w-8 h-8 border-b-2 border-l-2 border-iga-gold/60 rounded-bl-lg z-10"></div>
           <div class="absolute bottom-0 right-0 w-8 h-8 border-b-2 border-r-2 border-iga-gold/60 rounded-br-lg z-10"></div>
           
-          <div class="w-full h-[400px]">
+          <div class="w-full h-[400px] relative bg-iga-background">
+            {/* Loading spinner */}
+            <div class="map-loader absolute inset-0 flex flex-col items-center justify-center gap-3 z-10">
+              <svg class="animate-spin h-8 w-8 text-iga-copper" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+              </svg>
+              <span class="text-xs text-iga-foreground/40 font-sans">Cargando mapa...</span>
+            </div>
             <iframe
-              src={embedUrl}
+              data-src={embedUrl}
               width="100%"
               height="100%"
               style="border:0;"
@@ -55,6 +63,8 @@ const viewMapUrl = map.viewMapUrl ?? mapsUrl;
               loading="lazy"
               referrerpolicy="no-referrer-when-downgrade"
               title="Mapa de ubicación"
+              class="lazy-load"
+              onload="this.parentNode.querySelector('.map-loader').style.display='none'"
             ></iframe>
           </div>
         </div>
@@ -69,6 +79,37 @@ const viewMapUrl = map.viewMapUrl ?? mapsUrl;
         <div class="flex-1 h-px bg-gradient-to-r from-transparent via-iga-copper/60 to-transparent"></div>
       </div>
     </div>
+
+    {/* Directions video — optional, only shown if URL is configured */}
+    {map.directionsVideoUrl && (
+      <div class="w-full max-w-3xl flex flex-col items-center gap-4">
+        <h3 class="font-cinzel-regular text-lg text-iga-navy uppercase tracking-wide">
+          Cómo llegar
+        </h3>
+        <div class="relative w-full rounded-xl overflow-hidden shadow-lg border-2 border-iga-copper/20 bg-black">
+          {/* Loading spinner */}
+          <div class="video-loader absolute inset-0 flex flex-col items-center justify-center gap-3 z-10">
+            <svg class="animate-spin h-8 w-8 text-iga-copper" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+              <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+              <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+            </svg>
+            <span class="text-xs text-white/40 font-sans">Cargando video...</span>
+          </div>
+          <div class="w-full aspect-video">
+            <video
+              data-src={map.directionsVideoUrl}
+              controls
+              playsinline
+              preload="none"
+              class="w-full h-full object-cover lazy-load"
+              oncanplay="this.parentNode.parentNode.querySelector('.video-loader').style.display='none'"
+            >
+              Tu navegador no soporta el elemento de video.
+            </video>
+          </div>
+        </div>
+      </div>
+    )}
 
     {/* Action cards */}
     <div class="w-full max-w-3xl grid grid-cols-1 sm:grid-cols-2 gap-4">
@@ -118,6 +159,8 @@ const viewMapUrl = map.viewMapUrl ?? mapsUrl;
 
   <script>
     import { initAnimateOnScroll } from '@/lib/animate-on-scroll';
+    import { initLazyLoad } from '@/lib/lazy-load';
     initAnimateOnScroll();
+    initLazyLoad();
   </script>
 </section>

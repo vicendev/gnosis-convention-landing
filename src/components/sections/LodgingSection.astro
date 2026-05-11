@@ -17,42 +17,47 @@ const { lodgings, class: className } = Astro.props;
   <Container class="flex flex-col items-center gap-12">
     <SectionTitle title="Alojamiento" subtitle="Opciones cercanas al espacio de encuentro" />
 
-    <div class="w-full max-w-3xl flex flex-col gap-4">
+    <div class="w-full grid grid-cols-1 lg:grid-cols-3 gap-4 md:gap-6">
       {lodgings.map((lodging, index) => (
-        <article class="rounded-xl border border-iga-copper/20 bg-white p-6 md:p-8 shadow-sm hover:shadow-md hover:border-iga-copper/40 transition-all duration-300">
+        <article class="h-full flex flex-col min-w-0 rounded-xl border border-iga-copper/20 bg-white p-6 shadow-sm hover:shadow-md hover:border-iga-copper/40 transition-all duration-300">
           
-          {/* Top accent line */}
+          {/* ── Top accent line ────────────────────────── */}
           <div class="h-0.5 w-16 bg-gradient-to-r from-iga-copper to-iga-gold rounded-full mb-5"></div>
           
-          {/* Hotel name */}
-          <h3 class="font-cinzel-regular text-lg md:text-xl uppercase tracking-wide text-iga-navy mb-3">
-            {lodging.name}
-          </h3>
+          {/* ── Header: name + badges ──────────────────── */}
+          <div class="flex flex-wrap items-start justify-between gap-3 mb-4">
+            <h3 class="font-cinzel-regular text-lg md:text-xl uppercase tracking-wide text-iga-navy">
+              {lodging.name}
+            </h3>
+            
+            {/* Badges: bathroom / breakfast */}
+            <div class="flex flex-wrap gap-2">
+              {lodging.bathroom && (
+                <span class="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-iga-navy/5 text-iga-navy text-xs font-sans font-semibold">
+                  <Icon name="lucide:shower-head" class="h-3 w-3" />
+                  {lodging.bathroom}
+                </span>
+              )}
+              {lodging.breakfast && (
+                <span class="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-iga-forest/5 text-iga-forest text-xs font-sans font-semibold">
+                  <Icon name="lucide:coffee" class="h-3 w-3" />
+                  {lodging.breakfast}
+                </span>
+              )}
+            </div>
+          </div>
           
-          {/* Info rows — clear, well spaced */}
-          <div class="flex flex-col gap-4 mt-4">
+          {/* ── Details ────────────────────────────────── */}
+          <div class="flex flex-col gap-3">
             
             {/* Address */}
             <div class="flex items-start gap-3">
               <Icon name="lucide:map-pin" class="h-5 w-5 text-iga-copper flex-shrink-0 mt-0.5" />
               <div>
                 <p class="text-xs uppercase tracking-wider text-iga-foreground/40 font-sans font-semibold mb-0.5">Dirección</p>
-                <p class="text-base text-iga-foreground/80">{lodging.address}</p>
+                <p class="text-base text-iga-foreground/80 break-words">{lodging.address}</p>
               </div>
             </div>
-            
-            {/* Phone */}
-            {lodging.phone && (
-              <div class="flex items-start gap-3">
-                <Icon name="lucide:phone" class="h-5 w-5 text-iga-copper flex-shrink-0 mt-0.5" />
-                <div>
-                  <p class="text-xs uppercase tracking-wider text-iga-foreground/40 font-sans font-semibold mb-0.5">Teléfono</p>
-                  <a href={`tel:${lodging.phone}`} class="text-base text-iga-foreground/80 hover:text-iga-copper transition-colors">
-                    {lodging.phone}
-                  </a>
-                </div>
-              </div>
-            )}
             
             {/* Distance */}
             <div class="flex items-start gap-3">
@@ -62,10 +67,89 @@ const { lodgings, class: className } = Astro.props;
                 <p class="text-base text-iga-foreground/80">{lodging.distance}</p>
               </div>
             </div>
+            
+            {/* Phone */}
+            {lodging.phone && (
+              <div class="flex items-start gap-3">
+                <Icon name="lucide:phone" class="h-5 w-5 text-iga-copper flex-shrink-0 mt-0.5" />
+                <div>
+                  <p class="text-xs uppercase tracking-wider text-iga-foreground/40 font-sans font-semibold mb-0.5">Teléfono</p>
+                  <a href={`tel:${lodging.phone}`} class="text-base text-iga-foreground/80 hover:text-iga-copper transition-colors break-all">
+                    {lodging.phone}
+                  </a>
+                </div>
+              </div>
+            )}
+            
+            {/* Email */}
+            {lodging.email && (
+              <div class="flex items-start gap-3">
+                <Icon name="lucide:mail" class="h-5 w-5 text-iga-copper flex-shrink-0 mt-0.5" />
+                <div>
+                  <p class="text-xs uppercase tracking-wider text-iga-foreground/40 font-sans font-semibold mb-0.5">Email</p>
+                  <a href={`mailto:${lodging.email}`} class="text-base text-iga-foreground/80 hover:text-iga-copper transition-colors break-all">
+                    {lodging.email}
+                  </a>
+                </div>
+              </div>
+            )}
+            
+            {/* Contact person */}
+            {lodging.contactPerson && (
+              <div class="flex items-start gap-3">
+                <Icon name="lucide:user" class="h-5 w-5 text-iga-copper flex-shrink-0 mt-0.5" />
+                <div>
+                  <p class="text-xs uppercase tracking-wider text-iga-foreground/40 font-sans font-semibold mb-0.5">Contacto</p>
+                  <p class="text-base text-iga-foreground/80">{lodging.contactPerson}</p>
+                </div>
+              </div>
+            )}
           </div>
-          
-          {/* Map link button */}
-          <div class="mt-6 pt-4 border-t border-iga-foreground/5">
+
+          {/* ── Description ────────────────────────────── */}
+          {lodging.description && (
+            <p class="mt-4 text-sm text-iga-foreground/70 italic leading-relaxed border-l-2 border-iga-copper/30 pl-4">
+              {lodging.description}
+            </p>
+          )}
+
+          {/* ── Discount callout ────────────────────────── */}
+          {lodging.discount && lodging.discountKeyword && (
+            <div class="mt-5 p-4 rounded-lg bg-gradient-to-r from-iga-gold/10 to-iga-copper/10 border border-iga-gold/30">
+              <div class="flex items-start gap-3">
+                <Icon name="lucide:tag" class="h-5 w-5 text-iga-copper flex-shrink-0 mt-0.5" />
+                <div>
+                  <p class="text-sm font-sans font-semibold text-iga-navy">
+                    Hotel que ofrece <span class="text-iga-copper">{lodging.discount}</span>
+                  </p>
+                  <p class="text-xs text-iga-foreground/60 mt-1">
+                    Si se menciona: <span class="font-mono font-bold text-iga-forest bg-white/50 px-1.5 py-0.5 rounded text-[0.7rem]">{lodging.discountKeyword}</span>
+                  </p>
+                </div>
+              </div>
+            </div>
+          )}
+
+          {/* ── Map embed iframe ────────────────────────── */}
+          {lodging.mapEmbedUrl && (
+            <div class="mt-5 w-full overflow-hidden rounded-lg border border-iga-foreground/10 relative bg-iga-background/50">
+              {/* Loading spinner */}
+              <div class="map-loader absolute inset-0 flex flex-col items-center justify-center gap-2 z-10">
+                <svg class="animate-spin h-5 w-5 text-iga-copper" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                  <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                  <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                </svg>
+              </div>
+              <iframe
+                data-src={lodging.mapEmbedUrl}
+                class="w-full max-w-full lazy-load"
+                onload="this.parentNode.querySelector('.map-loader').style.display='none'"
+              ></iframe>
+            </div>
+          )}
+
+          {/* ── Map link button ────────────────────────── */}
+          <div class="mt-auto pt-4 border-t border-iga-foreground/5">
             <a
               href={lodging.mapLink}
               target="_blank"
@@ -76,6 +160,7 @@ const { lodgings, class: className } = Astro.props;
               Ver en Google Maps
             </a>
           </div>
+
         </article>
       ))}
     </div>
@@ -83,6 +168,8 @@ const { lodgings, class: className } = Astro.props;
 
   <script>
     import { initAnimateOnScroll } from '@/lib/animate-on-scroll';
+    import { initLazyLoad } from '@/lib/lazy-load';
     initAnimateOnScroll();
+    initLazyLoad();
   </script>
 </section>
