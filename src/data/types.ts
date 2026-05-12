@@ -80,6 +80,15 @@ export interface ConventionLodging {
   mapEmbedUrl?: string;
 }
 
+// ─── Section Titles Config ─────────────────────────────────
+export interface SectionsConfig {
+  promotion: { title: string; subtitle: string };
+  registration: { title: string; subtitle: string };
+  gallery: { title: string };
+  map: { title: string; subtitle?: string; directionsLabel?: string };
+  lodging: { title: string; subtitle: string };
+}
+
 // ─── Section IDs (Playlist) ────────────────────────────────
 export type SectionId = "hero" | "promotion" | "registration" | "gallery" | "map" | "lodging";
 
@@ -97,4 +106,5 @@ export interface ConventionData {
   map: ConventionMap;
   lodgings: ConventionLodging[];
   sections: readonly SectionId[];
+  sectionsConfig: SectionsConfig;
 }

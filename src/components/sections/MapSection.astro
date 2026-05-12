@@ -7,10 +7,13 @@ import type { ConventionMap } from '@/data/types';
 
 interface Props {
   map: ConventionMap;
+  sectionTitle?: string;
+  sectionSubtitle?: string;
+  directionsLabel?: string;
   class?: string;
 }
 
-const { map, class: className } = Astro.props;
+const { map, sectionTitle = "Ubicación", sectionSubtitle = `${map.placeName} · ${map.address}`, directionsLabel = "Cómo llegar", class: className } = Astro.props;
 const mapsUrl = map.mapsUrl ?? `https://www.google.com/maps?q=${map.lat},${map.lng}`;
 const embedUrl = map.embedUrl ?? `https://maps.google.com/maps?q=${map.lat},${map.lng}&z=${map.zoom}&output=embed`;
 const directionsUrl = map.directionsUrl ?? `https://www.google.com/maps/dir/?api=1&destination=${map.lat},${map.lng}`;
@@ -19,17 +22,15 @@ const viewMapUrl = map.viewMapUrl ?? mapsUrl;
 
 <section id="map" class={cn("py-16 md:py-24 bg-iga-background", "animate-fade-up animate-on-scroll", className)}>
   <Container class="flex flex-col items-center gap-12">
-    <SectionTitle title="Ubicación" subtitle={`${map.placeName} · ${map.address}`} />
+    <SectionTitle title={sectionTitle} subtitle={sectionSubtitle} />
 
     {/* Map container with ornate frame */}
     <div class="w-full flex flex-col items-center gap-6">
       {/* Decorative top line */}
-      <div class="flex items-center gap-4 w-full max-w-4xl">
-        <div class="flex-1 h-px bg-gradient-to-r from-transparent via-iga-copper/60 to-transparent"></div>
-        <svg width="24" height="24" viewBox="0 0 24 24" class="text-iga-copper/80 flex-shrink-0">
-          <path fill="currentColor" d="M12 2L9.19 8.63 2 9.24l5.46 4.73L5.82 21 12 17.27 18.18 21l-1.64-7.03L22 9.24l-7.19-.61z"/>
-        </svg>
-        <div class="flex-1 h-px bg-gradient-to-r from-transparent via-iga-copper/60 to-transparent"></div>
+      <div class="flex items-center gap-3 w-full max-w-4xl">
+        <div class="flex-1 h-px bg-gradient-to-r from-transparent via-iga-copper/40 to-transparent"></div>
+        <div class="w-1.5 h-1.5 rounded-full bg-iga-copper/50 flex-shrink-0"></div>
+        <div class="flex-1 h-px bg-gradient-to-r from-transparent via-iga-copper/40 to-transparent"></div>
       </div>
 
       {/* Map frame */}
@@ -71,12 +72,10 @@ const viewMapUrl = map.viewMapUrl ?? mapsUrl;
       </div>
 
       {/* Decorative bottom line */}
-      <div class="flex items-center gap-4 w-full max-w-4xl">
-        <div class="flex-1 h-px bg-gradient-to-r from-transparent via-iga-copper/60 to-transparent"></div>
-        <svg width="24" height="24" viewBox="0 0 24 24" class="text-iga-copper/80 flex-shrink-0">
-          <path fill="currentColor" d="M12 2L9.19 8.63 2 9.24l5.46 4.73L5.82 21 12 17.27 18.18 21l-1.64-7.03L22 9.24l-7.19-.61z"/>
-        </svg>
-        <div class="flex-1 h-px bg-gradient-to-r from-transparent via-iga-copper/60 to-transparent"></div>
+      <div class="flex items-center gap-3 w-full max-w-4xl">
+        <div class="flex-1 h-px bg-gradient-to-r from-transparent via-iga-copper/40 to-transparent"></div>
+        <div class="w-1.5 h-1.5 rounded-full bg-iga-copper/50 flex-shrink-0"></div>
+        <div class="flex-1 h-px bg-gradient-to-r from-transparent via-iga-copper/40 to-transparent"></div>
       </div>
     </div>
 
@@ -84,7 +83,7 @@ const viewMapUrl = map.viewMapUrl ?? mapsUrl;
     {map.directionsVideoUrl && (
       <div class="w-full max-w-3xl flex flex-col items-center gap-4">
         <h3 class="font-cinzel-regular text-lg text-iga-navy uppercase tracking-wide">
-          Cómo llegar
+          {directionsLabel}
         </h3>
         <div class="relative w-full rounded-xl overflow-hidden shadow-lg border-2 border-iga-copper/20 bg-black">
           {/* Loading spinner */}
@@ -111,48 +110,62 @@ const viewMapUrl = map.viewMapUrl ?? mapsUrl;
       </div>
     )}
 
-    {/* Action cards */}
+    {/* Action cards — styled as interactive buttons */}
     <div class="w-full max-w-3xl grid grid-cols-1 sm:grid-cols-2 gap-4">
-      {/* Cómo llegar */}
       <a
         href={directionsUrl}
         target="_blank"
         rel="noopener noreferrer"
-        class="flex flex-col items-center gap-3 p-6 rounded-xl border border-iga-copper/20 bg-white text-center transition-all duration-300 hover:shadow-lg hover:border-iga-copper/40 hover:-translate-y-0.5 group"
+        class="flex flex-col items-center gap-4 p-6 rounded-xl border-2 border-iga-copper/30 bg-gradient-to-b from-iga-copper/5 to-white text-center transition-all duration-200 hover:bg-iga-copper/10 hover:shadow-lg hover:shadow-iga-copper/20 hover:border-iga-copper/60 hover:-translate-y-1 active:scale-[0.98] group cursor-pointer"
       >
-        <div class="flex items-center justify-center w-14 h-14 rounded-full bg-gradient-to-br from-iga-copper/10 to-iga-gold/10 group-hover:from-iga-copper/20 group-hover:to-iga-gold/20 transition-all duration-300">
+        <div class="flex items-center justify-center w-14 h-14 rounded-full bg-gradient-to-br from-iga-copper/20 to-iga-gold/20 group-hover:from-iga-copper/30 group-hover:to-iga-gold/30 transition-all duration-200">
           <svg width="28" height="28" viewBox="0 0 24 24" class="text-iga-copper">
             <path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 11l19-9-9 19-2-8-8-2z"/>
           </svg>
         </div>
-        <h3 class="font-cinzel-regular text-base font-bold text-iga-navy uppercase tracking-wide">
-          Cómo llegar
-        </h3>
-        <p class="text-sm text-iga-foreground/70 leading-relaxed">
-          Abrir navegación paso a paso desde tu ubicación
-        </p>
+        <div class="flex flex-col items-center gap-1">
+          <h3 class="font-cinzel-regular text-base font-bold text-iga-navy uppercase tracking-wide">
+            {directionsLabel}
+          </h3>
+          <p class="text-sm text-iga-foreground/70 leading-relaxed">
+            Abrir navegación paso a paso desde tu ubicación
+          </p>
+        </div>
+        <span class="inline-flex items-center gap-1.5 mt-1 px-5 py-2.5 rounded-lg bg-iga-copper text-white text-sm font-sans font-semibold transition-all duration-200 group-hover:bg-iga-copper/90 group-hover:shadow-md shadow-iga-copper/30">
+          Abrir en Google Maps
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M7 17l9.2-9.2M17 17V7H7"/>
+          </svg>
+        </span>
       </a>
 
-      {/* Ver mapa completo */}
       <a
         href={viewMapUrl}
         target="_blank"
         rel="noopener noreferrer"
-        class="flex flex-col items-center gap-3 p-6 rounded-xl border border-iga-copper/20 bg-white text-center transition-all duration-300 hover:shadow-lg hover:border-iga-copper/40 hover:-translate-y-0.5 group"
+        class="flex flex-col items-center gap-4 p-6 rounded-xl border-2 border-iga-copper/30 bg-gradient-to-b from-iga-copper/5 to-white text-center transition-all duration-200 hover:bg-iga-copper/10 hover:shadow-lg hover:shadow-iga-copper/20 hover:border-iga-copper/60 hover:-translate-y-1 active:scale-[0.98] group cursor-pointer"
       >
-        <div class="flex items-center justify-center w-14 h-14 rounded-full bg-gradient-to-br from-iga-copper/10 to-iga-gold/10 group-hover:from-iga-copper/20 group-hover:to-iga-gold/20 transition-all duration-300">
+        <div class="flex items-center justify-center w-14 h-14 rounded-full bg-gradient-to-br from-iga-copper/20 to-iga-gold/20 group-hover:from-iga-copper/30 group-hover:to-iga-gold/30 transition-all duration-200">
           <svg width="28" height="28" viewBox="0 0 24 24" class="text-iga-copper">
             <path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/>
             <polyline points="15 3 21 3 21 9"/>
             <line x1="10" y1="14" x2="21" y2="3"/>
           </svg>
         </div>
-        <h3 class="font-cinzel-regular text-base font-bold text-iga-navy uppercase tracking-wide">
-          Ver mapa completo
-        </h3>
-        <p class="text-sm text-iga-foreground/70 leading-relaxed">
-          Abrir Google Maps con toda la información del lugar
-        </p>
+        <div class="flex flex-col items-center gap-1">
+          <h3 class="font-cinzel-regular text-base font-bold text-iga-navy uppercase tracking-wide">
+            Ver mapa completo
+          </h3>
+          <p class="text-sm text-iga-foreground/70 leading-relaxed">
+            Abrir Google Maps con toda la información del lugar
+          </p>
+        </div>
+        <span class="inline-flex items-center gap-1.5 mt-1 px-5 py-2.5 rounded-lg bg-iga-copper text-white text-sm font-sans font-semibold transition-all duration-200 group-hover:bg-iga-copper/90 group-hover:shadow-md shadow-iga-copper/30">
+          Abrir en Google Maps
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M7 17l9.2-9.2M17 17V7H7"/>
+          </svg>
+        </span>
       </a>
     </div>
   </Container>

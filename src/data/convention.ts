@@ -26,7 +26,7 @@ export const convention: ConventionData = {
       "images/gnosis/destino_valparaiso_sala_conferencias_1.webp",
       "images/gnosis/destino_valparaiso_sala_conferencias_2.webp",
     ],
-    galleryAttribution: "Imágenes de Destino Valparaíso - Museo del Inmigrante",
+    galleryAttribution: "Imágenes Centro de Eventos \"Destino Valparaíso\"",
   },
 
   registration: {
@@ -52,12 +52,13 @@ export const convention: ConventionData = {
     lng: -71.626906,
     zoom: 17,
     address: "Calle Concepción 499, Cerro Concepción, Valparaíso",
-    placeName: "Destino Valparaíso - Museo del Inmigrante",
+    placeName: "Centro de Eventos \"Destino Valparaíso\"",
     instructions: "Cerro Alegre, Valparaíso. Acceso por Av. Alemania. Transporte público: ascensor Reina Victoria o bus local.",
     mapsUrl: "https://www.google.com/maps/place/Museo+del+Inmigrante/@-33.042709,-71.6294809,17z/data=!3m1!4b1!4m6!3m5!1s0x9689e1007a6a316d:0xbc8a9a2b7488e888!8m2!3d-33.042709!4d-71.626906!16s%2Fg%2F11yjnd8f2c?entry=ttu",
     embedUrl: "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d483.01282974608785!2d-71.62703979994244!3d-33.04271568090795!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x9689e1006492457b%3A0x906a0894bb573641!2sDestino%20Valpara%C3%ADso%20-%20Museo%20del%20Inmigrante!5e0!3m2!1ses!2scl!4v1778344890593!5m2!1ses!2scl",
     directionsUrl: "https://www.google.com/maps/dir/?api=1&destination=-33.042709,-71.626906",
     viewMapUrl: "https://www.google.com/maps/place/Destino+Valpara%C3%ADso+-+Museo+del+Inmigrante/@-33.0427157,-71.6270398,19z/data=!4m6!3m5!1s0x9689e1006492457b:0x906a0894bb573641!8m2!3d-33.0427982!4d-71.6271754!16s%2Fg%2F11x7_zdgzt?entry=ttu&g_ep=EgoyMDI2MDUwNi4wIKXMDSoASAFQAw%3D%3D",
+    directionsVideoUrl: "https://storage.northpatagonialore.com/videos/como-llegar.mp4",
   },
 
   lodgings: [
@@ -206,6 +207,7 @@ export const convention: ConventionData = {
       address: "Calle Guillermo Munnich 203, Cerro Alegre, Valparaíso",
       phone: "32 2380111",
       distance: "750 m del espacio de encuentro",
+      bathroom: "Baño privado",
       mapLink: "https://www.google.com/maps/search/Lofts+Magnolio/@-33.0458182,-71.6334337,19z/data=!4m4!2m3!5m2!5m1!1s2026-05-11?entry=ttu&g_ep=EgoyMDI2MDUwNi4wIKXMDSoASAFQAw%3D%3D",
       mapEmbedUrl: "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d836.1011045197517!2d-71.63343373029046!3d-33.045818174186415!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x9689e1303e6fdf63%3A0x1b17315e8575dcfb!2sLofts%20Magnolio!5e0!3m2!1ses!2scl!4v1778464767391!5m2!1ses!2scl",
     },
@@ -231,6 +233,14 @@ export const convention: ConventionData = {
     },
 
   ],
+
+  sectionsConfig: {
+    promotion: { title: "Video Promocional", subtitle: "XI Convención Gnóstica Nacional" },
+    registration: { title: "Inscripción", subtitle: "Participa en la XI Convención" },
+    gallery: { title: "Galería" },
+    map: { title: "Ubicación", subtitle: 'Centro de Eventos "Destino Valparaíso" · Calle Concepción 499', directionsLabel: "Cómo llegar" },
+    lodging: { title: "Hospedajes", subtitle: "Cercanos a Centro de Eventos \"Destino Valparaíso\"" },
+  },
 
   sections: ["hero", "promotion", "registration", "gallery", "map", "lodging"] as const,
 };

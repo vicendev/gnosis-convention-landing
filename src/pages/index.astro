@@ -1,8 +1,7 @@
 ---
 import MainLayout from '@/layouts/MainLayout.astro';
 import { convention } from '@/data/convention';
-
-// Section components
+import SectionDivider from '@/components/primitives/SectionDivider.astro';
 import HeroSection from '@/components/sections/HeroSection.astro';
 import PromotionSection from '@/components/sections/PromotionSection.astro';
 import RegistrationSection from '@/components/sections/RegistrationSection.astro';
@@ -13,6 +12,7 @@ import FooterSection from '@/components/sections/FooterSection.astro';
 
 const pageTitle = `${convention.title} ${convention.year}`;
 const pageDescription = convention.subtitle;
+const total = convention.sections.length;
 ---
 
 <MainLayout
@@ -20,56 +20,26 @@ const pageDescription = convention.subtitle;
   description={pageDescription}
 >
   {
-    convention.sections.map((sectionId) => {
+    convention.sections.map((sectionId, i) => {
+      const notLast = i < total - 1;
+
       if (sectionId === "hero") {
-        return (
-          <HeroSection
-            title={convention.title}
-            subtitle={convention.subtitle}
-            date={convention.date}
-            location={convention.location}
-            contact={convention.contact}
-            backgroundImage={convention.assets.heroBackground}
-          />
-        );
+        return [<HeroSection title={convention.title} subtitle={convention.subtitle} date={convention.date} location={convention.location} contact={convention.contact} backgroundImage={convention.assets.heroBackground} />, notLast && <SectionDivider class="my-4 md:my-6" />];
       }
       if (sectionId === "promotion") {
-        return (
-          <PromotionSection
-            title={convention.title}
-            description={convention.aboutDescription}
-            videoUrl={convention.assets.videoPromo}
-          />
-        );
+        return [<PromotionSection title={convention.title} description={convention.aboutDescription} videoUrl={convention.assets.videoPromo} sectionTitle={convention.sectionsConfig.promotion.title} sectionSubtitle={convention.sectionsConfig.promotion.subtitle} />, notLast && <SectionDivider class="my-4 md:my-6" />];
       }
       if (sectionId === "registration") {
-        return (
-          <RegistrationSection
-            registration={convention.registration}
-          />
-        );
+        return [<RegistrationSection registration={convention.registration} sectionTitle={convention.sectionsConfig.registration.title} sectionSubtitle={convention.sectionsConfig.registration.subtitle} />, notLast && <SectionDivider class="my-4 md:my-6" />];
       }
       if (sectionId === "gallery") {
-        return (
-          <MediaGallerySection
-            gallery={convention.assets.gallery}
-            galleryAttribution={convention.assets.galleryAttribution}
-          />
-        );
+        return [<MediaGallerySection gallery={convention.assets.gallery} galleryAttribution={convention.assets.galleryAttribution} sectionTitle={convention.sectionsConfig.gallery.title} />, notLast && <SectionDivider class="my-4 md:my-6" />];
       }
       if (sectionId === "map") {
-        return (
-          <MapSection
-            map={convention.map}
-          />
-        );
+        return [<MapSection map={convention.map} sectionTitle={convention.sectionsConfig.map.title} sectionSubtitle={convention.sectionsConfig.map.subtitle} directionsLabel={convention.sectionsConfig.map.directionsLabel} />, notLast && <SectionDivider class="my-4 md:my-6" />];
       }
       if (sectionId === "lodging") {
-        return (
-          <LodgingSection
-            lodgings={convention.lodgings}
-          />
-        );
+        return [<LodgingSection lodgings={convention.lodgings} sectionTitle={convention.sectionsConfig.lodging.title} sectionSubtitle={convention.sectionsConfig.lodging.subtitle} />, notLast && <SectionDivider class="my-4 md:my-6" />];
       }
       return null;
     })

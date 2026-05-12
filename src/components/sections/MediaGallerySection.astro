@@ -7,15 +7,16 @@ import { ASSET_BASE_URL } from '@/config/env';
 interface Props {
   gallery: string[];
   galleryAttribution?: string;
+  sectionTitle?: string;
   class?: string;
 }
 
-const { gallery, galleryAttribution, class: className } = Astro.props;
+const { gallery, galleryAttribution, sectionTitle = "Galería", class: className } = Astro.props;
 ---
 
 <section id="gallery" class={cn("py-16 md:py-24", "animate-fade-up animate-on-scroll", className)}>
   <Container class="flex flex-col items-center gap-12">
-    <SectionTitle title="Galería" subtitle={galleryAttribution ?? "Fotos del evento"} />
+    <SectionTitle title={sectionTitle} subtitle={galleryAttribution ?? "Fotos del evento"} />
 
     {gallery.length > 0 && (
       <div class="w-full max-w-4xl flex flex-col items-center gap-6">

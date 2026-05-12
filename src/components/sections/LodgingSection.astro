@@ -7,15 +7,17 @@ import type { ConventionLodging } from '@/data/types';
 
 interface Props {
   lodgings: ConventionLodging[];
+  sectionTitle?: string;
+  sectionSubtitle?: string;
   class?: string;
 }
 
-const { lodgings, class: className } = Astro.props;
+const { lodgings, sectionTitle = "Hospedajes", sectionSubtitle = "Cercanos a Centro de Eventos Destino Valparaíso", class: className } = Astro.props;
 ---
 
 <section id="lodging" class={cn("py-16 md:py-24", "animate-fade-up animate-on-scroll", className)}>
   <Container class="flex flex-col items-center gap-12">
-    <SectionTitle title="Alojamiento" subtitle="Opciones cercanas al espacio de encuentro" />
+    <SectionTitle title={sectionTitle} subtitle={sectionSubtitle} />
 
     <div class="w-full grid grid-cols-1 lg:grid-cols-3 gap-4 md:gap-6">
       {lodgings.map((lodging, index) => (
@@ -24,14 +26,14 @@ const { lodgings, class: className } = Astro.props;
           {/* ── Top accent line ────────────────────────── */}
           <div class="h-0.5 w-16 bg-gradient-to-r from-iga-copper to-iga-gold rounded-full mb-5"></div>
           
-          {/* ── Header: name + badges ──────────────────── */}
-          <div class="flex flex-wrap items-start justify-between gap-3 mb-4">
-            <h3 class="font-cinzel-regular text-lg md:text-xl uppercase tracking-wide text-iga-navy">
-              {lodging.name}
-            </h3>
-            
-            {/* Badges: bathroom / breakfast */}
-            <div class="flex flex-wrap gap-2">
+          {/* ── Header: name ──────────────────────────── */}
+          <h3 class="font-cinzel-regular text-lg md:text-xl uppercase tracking-wide text-iga-navy mb-3">
+            {lodging.name}
+          </h3>
+          
+          {/* ── Badges: bathroom / breakfast ──────────── */}
+          {(lodging.bathroom || lodging.breakfast) && (
+            <div class="flex flex-wrap gap-2 mb-4">
               {lodging.bathroom && (
                 <span class="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-iga-navy/5 text-iga-navy text-xs font-sans font-semibold">
                   <Icon name="lucide:shower-head" class="h-3 w-3" />
@@ -45,7 +47,7 @@ const { lodgings, class: className } = Astro.props;
                 </span>
               )}
             </div>
-          </div>
+          )}
           
           {/* ── Details ────────────────────────────────── */}
           <div class="flex flex-col gap-3">

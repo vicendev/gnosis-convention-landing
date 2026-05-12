@@ -8,15 +8,17 @@ interface Props {
   title: string;
   description: string;
   videoUrl?: string;
+  sectionTitle?: string;
+  sectionSubtitle?: string;
   class?: string;
 }
 
-const { title, description, videoUrl, class: className } = Astro.props;
+const { title, description, videoUrl, sectionTitle = "Video Promocional", sectionSubtitle = "XI Convención Gnóstica Nacional", class: className } = Astro.props;
 ---
 
 <section id="promotion" class={cn("py-16 md:py-24", "animate-fade-up animate-on-scroll", className)}>
   <Container class="flex flex-col items-center gap-8">
-    <SectionTitle title="Video Promocional" subtitle="XI Convención Gnóstica Nacional" />
+    <SectionTitle title={sectionTitle} subtitle={sectionSubtitle} />
     {/* Elegant quote block */}
     <div class="relative max-w-3xl w-full">
       {/* Decorative left border */}
@@ -38,12 +40,10 @@ const { title, description, videoUrl, class: className } = Astro.props;
     {videoUrl && (
       <div class="w-full flex flex-col items-center gap-6">
         {/* Decorative top line */}
-        <div class="flex items-center gap-4 w-full max-w-4xl">
-          <div class="flex-1 h-px bg-gradient-to-r from-transparent via-iga-copper/60 to-transparent"></div>
-          <svg width="24" height="24" viewBox="0 0 24 24" class="text-iga-copper/80 flex-shrink-0">
-            <path fill="currentColor" d="M12 2L9.19 8.63 2 9.24l5.46 4.73L5.82 21 12 17.27 18.18 21l-1.64-7.03L22 9.24l-7.19-.61z"/>
-          </svg>
-          <div class="flex-1 h-px bg-gradient-to-r from-transparent via-iga-copper/60 to-transparent"></div>
+        <div class="flex items-center gap-3 w-full max-w-4xl">
+          <div class="flex-1 h-px bg-gradient-to-r from-transparent via-iga-copper/40 to-transparent"></div>
+          <div class="w-1.5 h-1.5 rounded-full bg-iga-copper/50 flex-shrink-0"></div>
+          <div class="flex-1 h-px bg-gradient-to-r from-transparent via-iga-copper/40 to-transparent"></div>
         </div>
 
         {/* Video container with ornate frame */}
@@ -85,12 +85,10 @@ const { title, description, videoUrl, class: className } = Astro.props;
         </div>
 
         {/* Decorative bottom line */}
-        <div class="flex items-center gap-4 w-full max-w-4xl">
-          <div class="flex-1 h-px bg-gradient-to-r from-transparent via-iga-copper/60 to-transparent"></div>
-          <svg width="24" height="24" viewBox="0 0 24 24" class="text-iga-copper/80 flex-shrink-0">
-            <path fill="currentColor" d="M12 2L9.19 8.63 2 9.24l5.46 4.73L5.82 21 12 17.27 18.18 21l-1.64-7.03L22 9.24l-7.19-.61z"/>
-          </svg>
-          <div class="flex-1 h-px bg-gradient-to-r from-transparent via-iga-copper/60 to-transparent"></div>
+        <div class="flex items-center gap-3 w-full max-w-4xl">
+          <div class="flex-1 h-px bg-gradient-to-r from-transparent via-iga-copper/40 to-transparent"></div>
+          <div class="w-1.5 h-1.5 rounded-full bg-iga-copper/50 flex-shrink-0"></div>
+          <div class="flex-1 h-px bg-gradient-to-r from-transparent via-iga-copper/40 to-transparent"></div>
         </div>
       </div>
     )}

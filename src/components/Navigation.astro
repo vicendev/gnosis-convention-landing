@@ -13,7 +13,7 @@ const navLinks = [
   { href: '#registration', label: 'Inscripción' },
   { href: '#gallery', label: 'Galería' },
   { href: '#map', label: 'Ubicación' },
-  { href: '#lodging', label: 'Alojamiento' },
+  { href: '#lodging', label: 'Hospedajes' },
 ];
 ---
 
@@ -120,9 +120,9 @@ const navLinks = [
 <script>
   // Wait for DOM content before attaching events
   function initMobileMenu() {
-    const menuBtn = document.getElementById('mobile-menu-btn');
-    const closeBtn = document.getElementById('mobile-menu-close');
-    const overlay = document.getElementById('mobile-menu-overlay');
+    const menuBtn = document.getElementById('mobile-menu-btn')!;
+    const closeBtn = document.getElementById('mobile-menu-close')!;
+    const overlay = document.getElementById('mobile-menu-overlay')!;
     
     if (!menuBtn || !closeBtn || !overlay) {
       return;

@@ -6,10 +6,12 @@ import type { ConventionRegistration } from '@/data/types';
 
 interface Props {
   registration: ConventionRegistration;
+  sectionTitle?: string;
+  sectionSubtitle?: string;
   class?: string;
 }
 
-const { registration, class: className } = Astro.props;
+const { registration, sectionTitle = "Inscripción", sectionSubtitle = "Participa en la XI Convención", class: className } = Astro.props;
 
 const formatPrice = (price: number, currency: string) => {
   return new Intl.NumberFormat('es-CL', {
@@ -22,7 +24,7 @@ const formatPrice = (price: number, currency: string) => {
 
 <section id="registration" class={cn("py-16 md:py-24 bg-iga-background", "animate-fade-up animate-on-scroll", className)}>
   <Container class="flex flex-col items-center gap-12">
-    <SectionTitle title="Inscripción" subtitle="Participa en la XI Convención" />
+    <SectionTitle title={sectionTitle} subtitle={sectionSubtitle} />
 
     <div class="w-full max-w-2xl xl:max-w-3xl">
       {/* Price card */}
@@ -74,9 +76,7 @@ const formatPrice = (price: number, currency: string) => {
           {/* Decorative divider */}
           <div class="flex items-center gap-3 w-full max-w-xs xl:max-w-sm">
             <div class="flex-1 h-px bg-iga-copper/30"></div>
-            <svg width="16" height="16" viewBox="0 0 24 24" class="text-iga-copper/60 flex-shrink-0 xl:w-5 xl:h-5">
-              <path fill="currentColor" d="M12 2L9.19 8.63 2 9.24l5.46 4.73L5.82 21 12 17.27 18.18 21l-1.64-7.03L22 9.24l-7.19-.61z"/>
-            </svg>
+            <div class="w-1.5 h-1.5 rounded-full bg-iga-copper/40 flex-shrink-0"></div>
             <div class="flex-1 h-px bg-iga-copper/30"></div>
           </div>
 
