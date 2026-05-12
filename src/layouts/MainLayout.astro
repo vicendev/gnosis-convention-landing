@@ -41,6 +41,9 @@ const canonicalUrl = new URL(canonicalPath, SITE_URL).href;
     <meta property="og:url" content={canonicalUrl} />
 
     <link rel="canonical" href={canonicalUrl} />
+
+    <link rel="icon" type="image/png" href="/iga-logo.png" />
+    <link rel="apple-touch-icon" href="/iga-logo.png" />
   </head>
   <body class={cn("bg-iga-background text-iga-foreground font-sans antialiased")}>
     <Navigation />
