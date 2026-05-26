@@ -6,18 +6,30 @@ import { cn } from '@/lib/utils';
 import type { ConventionMap } from '@/data/types';
 
 interface Props {
-  map: ConventionMap;
+  map: ConventionMap[];
   sectionTitle?: string;
   sectionSubtitle?: string;
   directionsLabel?: string;
   class?: string;
 }
 
-const { map, sectionTitle = "Ubicación", sectionSubtitle = `${map.placeName} · ${map.address}`, directionsLabel = "Cómo llegar", class: className } = Astro.props;
-const mapsUrl = map.mapsUrl ?? `https://www.google.com/maps?q=${map.lat},${map.lng}`;
-const embedUrl = map.embedUrl ?? `https://maps.google.com/maps?q=${map.lat},${map.lng}&z=${map.zoom}&output=embed`;
-const directionsUrl = map.directionsUrl ?? `https://www.google.com/maps/dir/?api=1&destination=${map.lat},${map.lng}`;
-const viewMapUrl = map.viewMapUrl ?? mapsUrl;
+const { map: maps, sectionTitle = "Ubicación", sectionSubtitle, directionsLabel = "Cómo llegar", class: className } = Astro.props;
+
+const hasMultiple = maps.length > 1;
+
+// Resolve all URLs at build time per map entry
+const resolvedMaps = maps.map(m => ({
+  label: m.label,
+  embedUrl: m.embedUrl ?? `https://maps.google.com/maps?q=${m.lat},${m.lng}&z=${m.zoom}&output=embed`,
+  placeName: m.placeName,
+  address: m.address,
+  instructions: m.instructions,
+  directionsUrl: m.directionsUrl ?? `https://www.google.com/maps/dir/?api=1&destination=${m.lat},${m.lng}`,
+  viewMapUrl: m.viewMapUrl ?? m.mapsUrl ?? `https://www.google.com/maps?q=${m.lat},${m.lng}`,
+  directionsVideoUrl: m.directionsVideoUrl ?? null,
+}));
+
+const initial = resolvedMaps[0];
 ---
 
 <section id="map" class={cn("py-16 md:py-24 bg-iga-background", "animate-fade-up animate-on-scroll", className)}>
@@ -33,11 +45,47 @@ const viewMapUrl = map.viewMapUrl ?? mapsUrl;
         <div class="flex-1 h-px bg-gradient-to-r from-transparent via-iga-copper/40 to-transparent"></div>
       </div>
 
+      {/* Toggle pills — only when multiple maps configured */}
+      {hasMultiple && (
+        <div id="map-pills" class="flex flex-wrap justify-center gap-3 p-1.5 rounded-xl border border-iga-copper/30 bg-iga-copper/5">
+          {resolvedMaps.map((m, i) => (
+            <button
+              data-index={i}
+              data-active={i === 0}
+              class={cn(
+                "flex items-center gap-2 px-6 py-2.5 rounded-lg font-cinzel-regular text-sm uppercase tracking-wide transition-all duration-200 min-h-[44px]",
+                i === 0
+                  ? "bg-iga-copper text-white shadow-md"
+                  : "bg-iga-background/60 text-iga-foreground border border-iga-copper/30 hover:bg-iga-copper/10"
+              )}
+            >
+              <svg width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <path d="M20 10c0 4.993-5.539 10.193-7.399 11.799a1 1 0 0 1-1.202 0C9.539 20.193 4 14.993 4 10a8 8 0 0 1 16 0"/>
+                <circle cx="12" cy="10" r="3"/>
+              </svg>
+              {m.label}
+            </button>
+          ))}
+        </div>
+      )}
+
+      {/* Dynamic location info — shows active map's place + address */}
+      <div id="map-location-info" class="flex flex-col items-center gap-1 text-center">
+        <p id="map-place" class="font-serif text-iga-copper italic"
+           style="font-size: clamp(1rem, 2vw, 1.25rem);"
+        >
+          {initial.placeName}
+        </p>
+        <p id="map-address" class="font-sans text-iga-foreground/75 text-sm sm:text-base">
+          {initial.address}
+        </p>
+      </div>
+
       {/* Map frame */}
       <div class="relative w-full max-w-4xl">
         {/* Outer decorative border */}
         <div class="absolute -inset-1 rounded-2xl bg-gradient-to-br from-iga-copper/40 via-iga-gold/20 to-iga-copper/40 blur-sm"></div>
-        
+
         {/* Main frame */}
         <div class="relative rounded-xl overflow-hidden shadow-2xl border-2 border-iga-copper/30 bg-iga-foreground/5">
           {/* Corner ornaments */}
@@ -45,10 +93,10 @@ const viewMapUrl = map.viewMapUrl ?? mapsUrl;
           <div class="absolute top-0 right-0 w-8 h-8 border-t-2 border-r-2 border-iga-gold/60 rounded-tr-lg z-10"></div>
           <div class="absolute bottom-0 left-0 w-8 h-8 border-b-2 border-l-2 border-iga-gold/60 rounded-bl-lg z-10"></div>
           <div class="absolute bottom-0 right-0 w-8 h-8 border-b-2 border-r-2 border-iga-gold/60 rounded-br-lg z-10"></div>
-          
+
           <div class="w-full h-[400px] relative bg-iga-background">
             {/* Loading spinner */}
-            <div class="map-loader absolute inset-0 flex flex-col items-center justify-center gap-3 z-10">
+            <div id="map-loader" class="absolute inset-0 flex flex-col items-center justify-center gap-3 z-10" style="display: none;">
               <svg class="animate-spin h-8 w-8 text-iga-copper" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
                 <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
                 <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
@@ -56,7 +104,8 @@ const viewMapUrl = map.viewMapUrl ?? mapsUrl;
               <span class="text-xs text-iga-foreground/40 font-sans">Cargando mapa...</span>
             </div>
             <iframe
-              data-src={embedUrl}
+              id="map-iframe"
+              data-src={initial.embedUrl}
               width="100%"
               height="100%"
               style="border:0;"
@@ -65,7 +114,6 @@ const viewMapUrl = map.viewMapUrl ?? mapsUrl;
               referrerpolicy="no-referrer-when-downgrade"
               title="Mapa de ubicación"
               class="lazy-load"
-              onload="this.parentNode.querySelector('.map-loader').style.display='none'"
             ></iframe>
           </div>
         </div>
@@ -79,41 +127,45 @@ const viewMapUrl = map.viewMapUrl ?? mapsUrl;
       </div>
     </div>
 
-    {/* Directions video — optional, only shown if URL is configured */}
-    {map.directionsVideoUrl && (
-      <div class="w-full max-w-3xl flex flex-col items-center gap-4">
-        <h3 class="font-cinzel-regular text-lg text-iga-navy uppercase tracking-wide">
-          {directionsLabel}
-        </h3>
-        <div class="relative w-full rounded-xl overflow-hidden shadow-lg border-2 border-iga-copper/20 bg-black">
-          {/* Loading spinner */}
-          <div class="video-loader absolute inset-0 flex flex-col items-center justify-center gap-3 z-10">
-            <svg class="animate-spin h-8 w-8 text-iga-copper" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-              <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
-              <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
-            </svg>
-            <span class="text-xs text-white/40 font-sans">Cargando video...</span>
-          </div>
-          <div class="w-full aspect-video">
-            <video
-              data-src={map.directionsVideoUrl}
-              controls
-              playsinline
-              preload="none"
-              class="w-full h-full object-cover lazy-load"
-              oncanplay="this.parentNode.parentNode.querySelector('.video-loader').style.display='none'"
-            >
-              Tu navegador no soporta el elemento de video.
-            </video>
-          </div>
+    {/* Instructions — hidden when empty */}
+    <div id="map-instructions" class="max-w-2xl text-center font-serif text-base text-iga-foreground/80 italic leading-relaxed" style={initial.instructions ? "" : "display: none;"}>
+      {initial.instructions}
+    </div>
+
+    {/* Directions video — optional per map */}
+    <div id="map-video-section" class="w-full max-w-3xl flex flex-col items-center gap-4" style={initial.directionsVideoUrl ? "" : "display: none;"}>
+      <h3 class="font-cinzel-regular text-lg text-iga-navy uppercase tracking-wide">
+        {directionsLabel}
+      </h3>
+      <div class="relative w-full rounded-xl overflow-hidden shadow-lg border-2 border-iga-copper/20 bg-black">
+        <div class="video-loader absolute inset-0 flex flex-col items-center justify-center gap-3 z-10">
+          <svg class="animate-spin h-8 w-8 text-iga-copper" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+            <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+            <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+          </svg>
+          <span class="text-xs text-white/40 font-sans">Cargando video...</span>
+        </div>
+        <div class="w-full aspect-video">
+          <video
+            id="map-directions-video"
+            data-src={initial.directionsVideoUrl}
+            controls
+            playsinline
+            preload="none"
+            class="w-full h-full object-cover lazy-load"
+            oncanplay="this.parentNode.parentNode.querySelector('.video-loader').style.display='none'"
+          >
+            Tu navegador no soporta el elemento de video.
+          </video>
         </div>
       </div>
-    )}
+    </div>
 
-    {/* Action cards — styled as interactive buttons */}
+    {/* Action cards */}
     <div class="w-full max-w-3xl grid grid-cols-1 sm:grid-cols-2 gap-4">
       <a
-        href={directionsUrl}
+        id="map-dir-link"
+        href={initial.directionsUrl}
         target="_blank"
         rel="noopener noreferrer"
         class="flex flex-col items-center gap-4 p-6 rounded-xl border-2 border-iga-copper/30 bg-gradient-to-b from-iga-copper/5 to-white text-center transition-all duration-200 hover:bg-iga-copper/10 hover:shadow-lg hover:shadow-iga-copper/20 hover:border-iga-copper/60 hover:-translate-y-1 active:scale-[0.98] group cursor-pointer"
@@ -140,7 +192,8 @@ const viewMapUrl = map.viewMapUrl ?? mapsUrl;
       </a>
 
       <a
-        href={viewMapUrl}
+        id="map-view-link"
+        href={initial.viewMapUrl}
         target="_blank"
         rel="noopener noreferrer"
         class="flex flex-col items-center gap-4 p-6 rounded-xl border-2 border-iga-copper/30 bg-gradient-to-b from-iga-copper/5 to-white text-center transition-all duration-200 hover:bg-iga-copper/10 hover:shadow-lg hover:shadow-iga-copper/20 hover:border-iga-copper/60 hover:-translate-y-1 active:scale-[0.98] group cursor-pointer"
@@ -170,10 +223,125 @@ const viewMapUrl = map.viewMapUrl ?? mapsUrl;
     </div>
   </Container>
 
+  <!-- Serializable map data for the toggle script -->
+  <div id="maps-data" data-maps={JSON.stringify(resolvedMaps)} hidden></div>
+
   <script>
     import { initAnimateOnScroll } from '@/lib/animate-on-scroll';
     import { initLazyLoad } from '@/lib/lazy-load';
+
+    function initMapToggle() {
+      const dataEl = document.getElementById('maps-data');
+      if (!dataEl) return;
+      const raw = dataEl.getAttribute('data-maps');
+      if (!raw) return;
+      const mapsData = JSON.parse(raw);
+      if (mapsData.length <= 1) return;
+
+      const iframe = document.getElementById('map-iframe') as HTMLIFrameElement | null;
+      const loader = document.getElementById('map-loader');
+      const pills = document.querySelectorAll<HTMLButtonElement>('#map-pills button');
+      const placeEl = document.getElementById('map-place');
+      const addressEl = document.getElementById('map-address');
+      const instructionsEl = document.getElementById('map-instructions');
+      const dirLink = document.getElementById('map-dir-link') as HTMLAnchorElement | null;
+      const viewLink = document.getElementById('map-view-link') as HTMLAnchorElement | null;
+      const videoSection = document.getElementById('map-video-section');
+      const videoEl = document.getElementById('map-directions-video') as HTMLVideoElement | null;
+
+      let currentIndex = 0;
+      let timeoutId: number | null = null;
+
+      function switchMap(index: number) {
+        if (index === currentIndex || !iframe) return;
+        const data = mapsData[index];
+
+        if (loader) loader.style.display = 'flex';
+
+        iframe.src = data.embedUrl;
+
+        if (timeoutId) clearTimeout(timeoutId);
+        timeoutId = window.setTimeout(() => {
+          if (loader) loader.style.display = 'none';
+        }, 5000);
+
+        if (placeEl) placeEl.textContent = data.placeName;
+        if (addressEl) addressEl.textContent = data.address;
+        if (instructionsEl) {
+          instructionsEl.textContent = data.instructions;
+          instructionsEl.style.display = data.instructions ? '' : 'none';
+        }
+
+        if (dirLink) dirLink.href = data.directionsUrl;
+        if (viewLink) viewLink.href = data.viewMapUrl;
+
+        if (data.directionsVideoUrl) {
+          if (videoSection) videoSection.style.display = '';
+          if (videoEl) {
+            videoEl.src = data.directionsVideoUrl;
+            videoEl.load();
+          }
+        } else {
+          if (videoSection) videoSection.style.display = 'none';
+          if (videoEl) {
+            videoEl.removeAttribute('src');
+            videoEl.load();
+          }
+        }
+
+        pills.forEach((pill, i) => {
+          pill.classList.toggle('bg-iga-copper', i === index);
+          pill.classList.toggle('text-white', i === index);
+          pill.classList.toggle('shadow-md', i === index);
+          pill.classList.toggle('bg-iga-background/60', i !== index);
+          pill.classList.toggle('text-iga-foreground', i !== index);
+          pill.classList.toggle('border', i !== index);
+          pill.classList.toggle('border-iga-copper/30', i !== index);
+          pill.setAttribute('data-active', String(i === index));
+        });
+
+        currentIndex = index;
+      }
+
+      pills.forEach((pill) => {
+        pill.addEventListener('click', () => {
+          const index = parseInt(pill.getAttribute('data-index') || '0');
+          switchMap(index);
+        });
+      });
+
+      if (iframe) {
+        iframe.addEventListener('load', () => {
+          if (loader) loader.style.display = 'none';
+          if (timeoutId) clearTimeout(timeoutId);
+        });
+      }
+
+      /* ── One-time breath pulse on the inactive pill ── */
+      const section = document.getElementById('map');
+      const pillsContainer = document.getElementById('map-pills');
+      if (section && pillsContainer) {
+        const observer = new IntersectionObserver((entries) => {
+          const entry = entries[0];
+          if (!entry.isIntersecting) return;
+          /* Wait for the section's fade-in animation (0.6s) to settle */
+          setTimeout(() => {
+            const inactive = pillsContainer.querySelector<HTMLElement>('button[data-active="false"]');
+            if (inactive) {
+              inactive.classList.add('animate-attention');
+              inactive.addEventListener('animationend', () => {
+                inactive.classList.remove('animate-attention');
+              }, { once: true });
+            }
+          }, 800);
+          observer.disconnect();
+        }, { threshold: 0.3 });
+        observer.observe(section);
+      }
+    }
+
     initAnimateOnScroll();
     initLazyLoad();
+    initMapToggle();
   </script>
 </section>

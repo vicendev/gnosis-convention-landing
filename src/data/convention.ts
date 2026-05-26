@@ -19,6 +19,7 @@ export const convention: ConventionData = {
     heroBackground: "/benediction-of-god-the-father.webp",
     videoPromo: "videos/promocion_iga_convencion_xi.mp4",
     gallery: [
+      "images/gnosis/salon_concepcion.webp",
       "images/gnosis/destino-valparaiso-fachada.webp",
       "images/gnosis/destino-valparaiso-patio-1.webp",
       "images/gnosis/destino_valparaiso_fachada_2.webp",
@@ -47,19 +48,34 @@ export const convention: ConventionData = {
     },
   },
 
-  map: {
-    lat: -33.042709,
-    lng: -71.626906,
-    zoom: 17,
-    address: "Calle Concepción 499, Cerro Concepción, Valparaíso",
-    placeName: "Centro de Eventos \"Destino Valparaíso\"",
-    instructions: "Cerro Alegre, Valparaíso. Acceso por Av. Alemania. Transporte público: ascensor Reina Victoria o bus local.",
-    mapsUrl: "https://www.google.com/maps/place/Museo+del+Inmigrante/@-33.042709,-71.6294809,17z/data=!3m1!4b1!4m6!3m5!1s0x9689e1007a6a316d:0xbc8a9a2b7488e888!8m2!3d-33.042709!4d-71.626906!16s%2Fg%2F11yjnd8f2c?entry=ttu",
-    embedUrl: "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d483.01282974608785!2d-71.62703979994244!3d-33.04271568090795!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x9689e1006492457b%3A0x906a0894bb573641!2sDestino%20Valpara%C3%ADso%20-%20Museo%20del%20Inmigrante!5e0!3m2!1ses!2scl!4v1778344890593!5m2!1ses!2scl",
-    directionsUrl: "https://www.google.com/maps/dir/?api=1&destination=-33.042709,-71.626906",
-    viewMapUrl: "https://www.google.com/maps/place/Destino+Valpara%C3%ADso+-+Museo+del+Inmigrante/@-33.0427157,-71.6270398,19z/data=!4m6!3m5!1s0x9689e1006492457b:0x906a0894bb573641!8m2!3d-33.0427982!4d-71.6271754!16s%2Fg%2F11x7_zdgzt?entry=ttu&g_ep=EgoyMDI2MDUwNi4wIKXMDSoASAFQAw%3D%3D",
-    directionsVideoUrl: "https://storage.northpatagonialore.com/videos/como-llegar.mp4",
-  },
+  map: [
+    {
+      label: "Centro de Conferencias",
+      placeName: 'Centro de Eventos "Destino Valparaíso"',
+      address: "Calle Concepción 499, Cerro Concepción, Valparaíso",
+      lat: -33.042709,
+      lng: -71.626906,
+      zoom: 17,
+      instructions: "",
+      mapsUrl: "https://www.google.com/maps/place/Museo+del+Inmigrante/@-33.042709,-71.6294809,17z/data=!3m1!4b1!4m6!3m5!1s0x9689e1007a6a316d:0xbc8a9a2b7488e888!8m2!3d-33.042709!4d-71.626906!16s%2Fg%2F11yjnd8f2c?entry=ttu",
+      embedUrl: "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d483.01282974608785!2d-71.62703979994244!3d-33.04271568090795!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x9689e1006492457b%3A0x906a0894bb573641!2sDestino%20Valpara%C3%ADso%20-%20Museo%20del%20Inmigrante!5e0!3m2!1ses!2scl!4v1778344890593!5m2!1ses!2scl",
+      directionsUrl: "https://www.google.com/maps/dir/?api=1&destination=-33.042709,-71.626906",
+      viewMapUrl: "https://www.google.com/maps/place/Destino+Valpara%C3%ADso+-+Museo+del+Inmigrante/@-33.0427157,-71.6270398,19z/data=!4m6!3m5!1s0x9689e1006492457b%3A0x906a0894bb573641!8m2!3d-33.0427982!4d-71.6271754!16s%2Fg%2F11x7_zdgzt?entry=ttu&g_ep=EgoyMDI2MDUwNi4wIKXMDSoASAFQAw%3D%3D",
+      directionsVideoUrl: "https://storage.northpatagonialore.com/videos/como-llegar.mp4",
+    },
+    {
+      label: "Punto de Encuentro",
+      placeName: "Teatro Montealegre",
+      address: "Plazuela San Luis 780, Montealegre, Cerro Alegre, Valparaíso",
+      lat: -33.044205,
+      lng: -71.6312478,
+      zoom: 18,
+      instructions: "",
+      embedUrl: "https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d209.02910465983334!2d-71.63124775807357!3d-33.04420497553429!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x9689e12e2c368a51%3A0x58712bc9d26fab91!2sTeatro%20Montealegre!5e0!3m2!1ses!2sus!4v1779759112435!5m2!1ses!2sus",
+      directionsUrl: "https://www.google.com/maps/dir/?api=1&destination=-33.044205,-71.6312478",
+      viewMapUrl: "https://www.google.com/maps/place/Teatro+Montealegre/@-33.044205,-71.6312478,18z",
+    },
+  ],
 
   lodgings: [
     {
@@ -238,7 +254,7 @@ export const convention: ConventionData = {
     promotion: { title: "Video Promocional", subtitle: "XI Convención Gnóstica Nacional" },
     registration: { title: "Inscripción", subtitle: "Participa en la XI Convención" },
     gallery: { title: "Galería" },
-    map: { title: "Ubicación", subtitle: 'Centro de Eventos "Destino Valparaíso" · Calle Concepción 499', directionsLabel: "Cómo llegar" },
+    map: { title: "Ubicación", subtitle: "Puntos de encuentro del evento", directionsLabel: "Cómo llegar" },
     lodging: { title: "Hospedajes", subtitle: "Cercanos a Centro de Eventos \"Destino Valparaíso\"" },
   },
 

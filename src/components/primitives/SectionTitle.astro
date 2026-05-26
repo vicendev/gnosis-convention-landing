@@ -11,7 +11,9 @@ const { title, subtitle, class: className } = Astro.props;
 ---
 
 <div class={cn("text-center", className)}>
-  <h2 class="font-cinzel-regular text-clamp-h2 font-bold text-iga-navy uppercase tracking-wide">
+  <h2 class="font-cinzel-regular font-bold text-iga-navy uppercase tracking-wide"
+      style="font-size: clamp(1.4rem, 4vw, 2.5rem);"
+  >
     {title}
   </h2>
   {subtitle && (

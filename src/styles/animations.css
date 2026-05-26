@@ -1,3 +1,13 @@
+/* ─── Breath-pulse (one-time attention) ──────────────── */
+@keyframes breath-pulse {
+  0%, 100% { opacity: 1; box-shadow: 0 0 0 0 transparent; }
+  50% { opacity: 0.65; box-shadow: 0 0 12px 2px var(--color-iga-copper); }
+}
+
+.animate-attention {
+  animation: breath-pulse 1.5s ease-in-out 1;
+}
+
 /* ─── Fade Up (scroll-triggered) ─────────────────────── */
 .animate-fade-up {
   opacity: 0;

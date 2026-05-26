@@ -40,11 +40,12 @@ export interface ConventionRegistration {
 
 // ─── Map ───────────────────────────────────────────────────
 export interface ConventionMap {
+  label: string;
+  address: string;
+  placeName: string;
   lat: number;
   lng: number;
   zoom: number;
-  address: string;
-  placeName: string;
   instructions: string;
   mapsUrl?: string;
   embedUrl?: string;
@@ -103,7 +104,7 @@ export interface ConventionData {
   aboutDescription: string;
   assets: ConventionAssets;
   registration: ConventionRegistration;
-  map: ConventionMap;
+  map: ConventionMap[];
   lodgings: ConventionLodging[];
   sections: readonly SectionId[];
   sectionsConfig: SectionsConfig;
