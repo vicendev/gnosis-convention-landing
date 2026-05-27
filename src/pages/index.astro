@@ -4,6 +4,7 @@ import { convention } from '@/data/convention';
 import SectionDivider from '@/components/primitives/SectionDivider.astro';
 import HeroSection from '@/components/sections/HeroSection.astro';
 import PromotionSection from '@/components/sections/PromotionSection.astro';
+import ProgramSection from '@/components/sections/ProgramSection.astro';
 import RegistrationSection from '@/components/sections/RegistrationSection.astro';
 import MediaGallerySection from '@/components/sections/MediaGallerySection.astro';
 import MapSection from '@/components/sections/MapSection.astro';
@@ -28,6 +29,9 @@ const total = convention.sections.length;
       }
       if (sectionId === "promotion") {
         return [<PromotionSection title={convention.title} description={convention.aboutDescription} videoUrl={convention.assets.videoPromo} sectionTitle={convention.sectionsConfig.promotion.title} sectionSubtitle={convention.sectionsConfig.promotion.subtitle} />, notLast && <SectionDivider class="my-4 md:my-6" />];
+      }
+      if (sectionId === "program") {
+        return [<ProgramSection programPdf={convention.assets.programPdf} sectionTitle={convention.sectionsConfig.program.title} sectionSubtitle={convention.sectionsConfig.program.subtitle} />, notLast && <SectionDivider class="my-4 md:my-6" />];
       }
       if (sectionId === "registration") {
         return [<RegistrationSection registration={convention.registration} sectionTitle={convention.sectionsConfig.registration.title} sectionSubtitle={convention.sectionsConfig.registration.subtitle} />, notLast && <SectionDivider class="my-4 md:my-6" />];
