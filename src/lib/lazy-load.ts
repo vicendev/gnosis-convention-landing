@@ -37,7 +37,7 @@ export function initLazyLoad(selector = ".lazy-load"): void {
             el.load();
           }
           // Also handle nested <source> elements
-          const source = el.querySelector("source[data-src]");
+          const source = el.querySelector<HTMLSourceElement>("source[data-src]");
           if (source) {
             source.src = source.getAttribute("data-src") ?? "";
             source.removeAttribute("data-src");
