@@ -9,6 +9,7 @@ export interface ConventionContact {
 export interface ConventionAssets {
   heroBackground: string;
   videoPromo: string;
+  programPdf: string;
   gallery: string[];
   galleryAttribution?: string;
 }
@@ -53,6 +54,14 @@ export interface ConventionMap {
   viewMapUrl?: string;
   /** URL opcional de un video mostrando cómo llegar al lugar */
   directionsVideoUrl?: string;
+  /** Aviso informativo opcional — ej: { label: "Sólo Miembros de Segunda Cámara Activos", bold: true, size: "large" } */
+  advice?: {
+    label: string;
+    /** Si es true, el texto se muestra en semibold */
+    bold?: boolean;
+    /** Controla el tamaño visual del badge: "normal" (default) o "large" */
+    size?: "normal" | "large";
+  };
 }
 
 // ─── Lodging ───────────────────────────────────────────────
@@ -84,6 +93,7 @@ export interface ConventionLodging {
 // ─── Section Titles Config ─────────────────────────────────
 export interface SectionsConfig {
   promotion: { title: string; subtitle: string };
+  program: { title: string; subtitle: string };
   registration: { title: string; subtitle: string };
   gallery: { title: string };
   map: { title: string; subtitle?: string; directionsLabel?: string };
@@ -91,7 +101,7 @@ export interface SectionsConfig {
 }
 
 // ─── Section IDs (Playlist) ────────────────────────────────
-export type SectionId = "hero" | "promotion" | "registration" | "gallery" | "map" | "lodging";
+export type SectionId = "hero" | "promotion" | "program" | "registration" | "gallery" | "map" | "lodging";
 
 // ─── Main Convention Data ──────────────────────────────────
 export interface ConventionData {

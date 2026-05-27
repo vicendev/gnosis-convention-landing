@@ -18,6 +18,7 @@ export const convention: ConventionData = {
   assets: {
     heroBackground: "/benediction-of-god-the-father.webp",
     videoPromo: "videos/promocion_iga_convencion_xi.mp4",
+    programPdf: "pdfs/gnosis/programa_xi_convencion.pdf",
     gallery: [
       "images/gnosis/salon_concepcion.webp",
       "images/gnosis/destino-valparaiso-fachada.webp",
@@ -61,12 +62,12 @@ export const convention: ConventionData = {
       embedUrl: "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d483.01282974608785!2d-71.62703979994244!3d-33.04271568090795!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x9689e1006492457b%3A0x906a0894bb573641!2sDestino%20Valpara%C3%ADso%20-%20Museo%20del%20Inmigrante!5e0!3m2!1ses!2scl!4v1778344890593!5m2!1ses!2scl",
       directionsUrl: "https://www.google.com/maps/dir/?api=1&destination=-33.042709,-71.626906",
       viewMapUrl: "https://www.google.com/maps/place/Destino+Valpara%C3%ADso+-+Museo+del+Inmigrante/@-33.0427157,-71.6270398,19z/data=!4m6!3m5!1s0x9689e1006492457b%3A0x906a0894bb573641!8m2!3d-33.0427982!4d-71.6271754!16s%2Fg%2F11x7_zdgzt?entry=ttu&g_ep=EgoyMDI2MDUwNi4wIKXMDSoASAFQAw%3D%3D",
-      directionsVideoUrl: "https://storage.northpatagonialore.com/videos/como-llegar.mp4",
     },
     {
-      label: "Punto de Encuentro",
+      label: "Segunda Cámara",
       placeName: "Teatro Montealegre",
       address: "Plazuela San Luis 780, Montealegre, Cerro Alegre, Valparaíso",
+      advice: { label: "Sólo Miembros Activos de Segunda Cámara", bold: true, size: "large" },
       lat: -33.044205,
       lng: -71.6312478,
       zoom: 18,
@@ -252,11 +253,12 @@ export const convention: ConventionData = {
 
   sectionsConfig: {
     promotion: { title: "Video Promocional", subtitle: "XI Convención Gnóstica Nacional" },
+    program: { title: "Programa Convención", subtitle: "Descarga el programa completo de la XI Convención" },
     registration: { title: "Inscripción", subtitle: "Participa en la XI Convención" },
     gallery: { title: "Galería" },
     map: { title: "Ubicación", subtitle: "Puntos de encuentro del evento", directionsLabel: "Cómo llegar" },
     lodging: { title: "Hospedajes", subtitle: "Cercanos a Centro de Eventos \"Destino Valparaíso\"" },
   },
 
-  sections: ["hero", "promotion", "registration", "gallery", "map", "lodging"] as const,
+  sections: ["hero", "promotion", "program", "registration", "gallery", "map", "lodging"] as const,
 };
