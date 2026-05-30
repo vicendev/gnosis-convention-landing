@@ -1,0 +1,15 @@
+{
+  "redirects": [
+    {
+      "source": "/:path*",
+      "has": [
+        {
+          "type": "host",
+          "value": "gnosis-convention-landing\\.vercel\\.app"
+        }
+      ],
+      "destination": "https://convencion-nacional-xi.iga-chile.cl/:path*",
+      "permanent": true
+    }
+  ]
+}
